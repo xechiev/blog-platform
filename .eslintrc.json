@@ -1,0 +1,86 @@
+{
+  "env": {
+      "browser": true,
+      "es2021": true,
+      "node": true
+  },
+  "extends": [
+      "airbnb",
+      "eslint:recommended",
+      "plugin:react-hooks/recommended",
+      "plugin:react/recommended",
+      "plugin:import/errors",
+      "plugin:import/warnings"
+  ],
+  "parser": "babel-eslint",
+  "parserOptions": {
+      "ecmaFeatures": {
+          "jsx": true
+      },
+      "ecmaVersion": 12,
+      "sourceType": "module"
+  },
+  "plugins": [
+      "react"
+  ],
+  "rules": {
+    "react/prop-types": 0,
+    "import/prefer-default-export": "off",
+    "comma-dangle": 0,
+    "arrow-body-style": ["error", "as-needed"],
+    "no-return-await": "error",
+    "no-underscore-dangle": 0,
+    "no-console":0,
+    "no-shadow": ["error", { "allow": ["done"]}],
+    "object-shorthand": ["error", "always"],
+    "max-len": ["error", { "code": 1500 }],
+    "camelcase": 0,
+    "no-return-assign": 0,
+    "no-unused-expressions": "error",
+    "no-use-before-define": 0,
+    "block-spacing": "error",
+    "no-unused-vars": 0,
+    "quotes": ["error", "double"],
+  //   "quote-props": ["error", "consistent"],
+    "spaced-comment": ["error", "always"],
+    "semi": "off",
+  //   "linebreak-style": 0,
+    "no-param-reassign": "off",
+    "no-trailing-spaces": "off",
+    "no-tabs": "off",
+    "no-mixed-spaces-and-tabs": "off",
+    "no-multiple-empty-lines": "off",
+    "class-methods-use-this": "off",
+    "no-plusplus": "off",
+    "indent": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/jsx-filename-extension": [
+        1,
+        {
+            "extensions": [
+                ".js",
+                ".jsx"
+            ]
+        }
+    ],
+    "react/state-in-constructor": [
+        "off"
+    ],
+    "react/static-property-placement": "off",
+    "jsx-a11y/href-no-hash": [
+        "off"
+    ],
+    "jsx-a11y/anchor-is-valid": [
+        "off"
+    ],
+    "jsx-a11y/label-has-associated-control": [
+        "error",
+        {
+            "assert": "either"
+        }
+    ],
+    "object-curly-newline": ["error", { "consistent": true }],
+    "operator-linebreak": ["error", "after"],
+    "implicit-arrow-linebreak": ["error", "beside"]
+    }
+}

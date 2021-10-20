@@ -1,0 +1,26 @@
+.body {
+  width: inherit;
+  max-height: 100vh;
+}
+.wrapper {
+  width: 941px;
+  height: 65vh;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  margin: 0px auto;
+  margin-top: 24px;
+  margin-bottom: 50px;
+}
+
+.markdown {
+  width: 880px;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: normal;
+  color: rgba(0, 0, 0, 0.75);
+  padding-bottom: 25px;
+}
+.body {
+  padding-left: 20px;
+}

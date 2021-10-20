@@ -1,0 +1,15 @@
+.wrapper {
+  align-items: center;
+  align-self: center;
+}
+.postList {
+  list-style-type: none;
+  margin: 0px;
+  padding: 0px;
+}
+.post {
+  margin-top: 26px;
+}
+.post:last-child {
+  margin-bottom: 26px;
+}
