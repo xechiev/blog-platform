@@ -30,7 +30,6 @@ const PostList = ({ history }) => {
     </div>
   );
 };
-
 PostList.propTypes = {
   history: PropTypes.objectOf(PropTypes.object).isRequired,
 };

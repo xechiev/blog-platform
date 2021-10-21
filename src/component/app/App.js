@@ -6,7 +6,6 @@ import Header from "../header/Header";
 import PostList from "../postList/PostList";
 import Article from "../article/Article";
 import Pagin from "../pagin/Pagin";
-import Post from "../post/Post";
 import NewAccount from "../newAccount/NewAccount";
 import SignIn from "../signIn/SignIn";
 import EditProfile from "../editProfile/EditProfile";
@@ -16,7 +15,7 @@ import classes from "./App.module.scss";
 export default function App() {
   const dispatch = useDispatch();
   const state = useSelector((store) => store);
-  const { totalCount, currentPage } = state;
+  const { dataPosts, totalCount, currentPage } = state;
 
   useEffect(() => {
     dispatch(getPostsData());
@@ -29,7 +28,7 @@ export default function App() {
         <Route path="/" exact render={() => <PostList />} />
         <Route path="/articles/" exact render={() => <PostList />} />
         <Route
-          path="/articles/:slug/"
+          path="/articles/:slug"
           render={({ match }) => {
             const { slug } = match.params;
             return <Article slugItem={slug} />;

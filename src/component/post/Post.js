@@ -6,7 +6,7 @@ import heart from "../../img/Vector.svg";
 import rectangle from "../../img/rectangle.svg";
 
 const Post = ({ title, tagList, author, updatedAt }) => {
-  console.log(updatedAt);
+  console.log("ok");
   return (
     <div className={classes.wrapper}>
       <div className={classes.body}>
@@ -33,10 +33,10 @@ const Post = ({ title, tagList, author, updatedAt }) => {
 };
 
 Post.propTypes = {
-  // title: PropTypes.string.isRequired,
-  // tagList: PropTypes.arrayOf(PropTypes.string).isRequired,
-  // author: PropTypes.objectOf(PropTypes.string).isRequired,
-  // updatedAt: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  tagList: PropTypes.arrayOf(PropTypes.string).isRequired,
+  author: PropTypes.objectOf(PropTypes.string).isRequired,
+  updatedAt: PropTypes.string.isRequired,
 };
 
 export default Post;

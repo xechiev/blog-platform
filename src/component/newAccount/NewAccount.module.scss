@@ -4,7 +4,6 @@
 }
 .wrapper {
   width: 385px;
-  height: 600px;
   background: #fff;
   margin: 0px auto;
   margin-top: 60px;
@@ -20,7 +19,7 @@
   font-style: normal;
   font-weight: normal;
 }
-.title {
+.name {
   font-family: Roboto;
   font-style: normal;
   font-weight: 500;
@@ -31,6 +30,35 @@
   color: #262626;
   align-self: center;
 }
+.title {
+  color: #262626;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 22px;
+  display: flex;
+  align-items: center;
+  margin: 2px 0px;
+}
+p {
+  color: #bf1650;
+}
+p::before {
+  display: inline;
+  content: "⚠ ";
+}
+.form {
+  width: 320px;
+  height: 40px;
+  background: #FFFFFF;
+  border: 1px solid #D9D9D9;
+  box-sizing: border-box;
+  border-radius: 4px;
+  padding-left: 8px;
+  margin-bottom: 12px;
+}
+
 .line {
   width: 320px;
   margin-top: 10px;
@@ -73,17 +101,10 @@
   background: no-repeat center url(../../img/check.svg) #1890FF;;
   border: 1px solid #1890FF;
 }
-.button {
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
-  line-height: 24px;
-  color: #FFFFFF;
-  transition: all 0.4s ease-in;
-  &:hover {
-    color: #1890FF;
-  }
+
+form {
+  display: flex;
+  flex-direction: column;
 }
 .haveAccount {
   color: #8C8C8C;
@@ -92,9 +113,44 @@
   font-weight: normal;
   font-size: 12px;
   line-height: 20px;
+  display: flex;
   align-self: center;
+
 }
 .signIn {
   font-size: 12px;
   line-height: 20px;
+}
+button {
+  padding: 0;
+  border: none;
+  font: inherit;
+  color: inherit;
+  background-color: transparent;
+  cursor: pointer;
+}
+.submit {
+  padding: 0;
+  border: none;
+  font: inherit;
+  color: #fff;
+  cursor: pointer;
+  width: 320px;
+  height: 40px;
+  background: #1890FF;
+  border-radius: 4px;
+  margin: 21px 0px 10px 0px;
+  transition: all 0.4s ease-in;
+  &:hover {
+    background: #0578e4;
+  }
+  &:active {
+    transition: 0.3s all;
+    transform: translateY(3px);
+    border: 1px solid transparent;
+    opacity: 0.8;
+  }
+  &:disabled {
+    opacity: 0.4;
+  }
 }
