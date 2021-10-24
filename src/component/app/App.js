@@ -5,11 +5,12 @@ import { getPostsData } from "../../redux/asyncActions/asyncActions";
 import Header from "../header/Header";
 import PostList from "../postList/PostList";
 import Article from "../article/Article";
-import Pagin from "../pagin/Pagin";
 import NewAccount from "../newAccount/NewAccount";
 import SignIn from "../signIn/SignIn";
 import EditProfile from "../editProfile/EditProfile";
+import NewArticle from "../newArticle/NewArticle";
 
+import "bootstrap/dist/css/bootstrap.min.css";
 import classes from "./App.module.scss";
 
 export default function App() {
@@ -37,6 +38,7 @@ export default function App() {
         <Route path="/newAccount" exact component={NewAccount} />
         <Route path="/signIn" exact component={SignIn} />
         <Route path="/editProfile" exact component={EditProfile} />
+        <Route path="/new-article" exact component={NewArticle} />
         {/* {totalCount > 5 ? Pagin(totalCount, 1, currentPage) : " "} */}
       </div>
     </Router>

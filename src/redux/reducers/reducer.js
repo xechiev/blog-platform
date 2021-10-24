@@ -1,5 +1,11 @@
 import { initialState } from "../initialState";
-import { SET_POSTS_DATA, SET_ARTICLE } from "../actions/actions";
+import {
+  SET_POSTS_DATA,
+  SET_ARTICLE,
+  LOGGED_IN,
+  IS_ERROR_SIGN_IN,
+  SHOW_ALERT,
+} from "../actions/actions";
 
 function reducer(state = initialState, action) {
   switch (action.type) {
@@ -14,7 +20,22 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         article: action.payload,
-        togglePost: true,
+      };
+    case LOGGED_IN:
+      return {
+        ...state,
+        isLoggedIn: action.payload,
+        redirect: true,
+      };
+    case IS_ERROR_SIGN_IN:
+      return {
+        ...state,
+        showErrorSignIn: action.payload,
+      };
+    case SHOW_ALERT:
+      return {
+        ...state,
+        showAlert: action.payload,
       };
     default:
       return state;

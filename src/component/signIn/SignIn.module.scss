@@ -52,6 +52,16 @@
   margin: 2px 0px;
 
 }
+.danger {
+  width: 100%;
+}
+.error {
+  color: #bf1650;
+}
+.error::before {
+  display: inline;
+  content: "⚠ ";
+}
 .button {
   font-family: Roboto;
   font-style: normal;

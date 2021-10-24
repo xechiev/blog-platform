@@ -5,21 +5,29 @@ import classes from "./Post.module.scss";
 import heart from "../../img/Vector.svg";
 import rectangle from "../../img/rectangle.svg";
 
-const Post = ({ title, tagList, author, updatedAt }) => {
-  console.log("ok");
+export default function Post({
+  title,
+  tagList,
+  author,
+  description,
+  updatedAt,
+  favoritesCount,
+  image,
+}) {
   return (
     <div className={classes.wrapper}>
       <div className={classes.body}>
         <div className={classes.titleLike}>
           <h5 className={classes.title}>{title}</h5>
           <img src={heart} alt="heart" className={classes.heart} />
-          <span className={classes.likes}>8</span>
+          <span className={classes.likes}>{favoritesCount}</span>
         </div>
         {tagList.map((tag) => (
           <div className={classes.tag} key={Math.random()}>
             {tag}
           </div>
         ))}
+        <p className={classes.description}>{description}</p>
       </div>
       <div className={classes.info}>
         <div className={classes.nameData}>
@@ -30,7 +38,7 @@ const Post = ({ title, tagList, author, updatedAt }) => {
       </div>
     </div>
   );
-};
+}
 
 Post.propTypes = {
   title: PropTypes.string.isRequired,
@@ -38,5 +46,3 @@ Post.propTypes = {
   author: PropTypes.objectOf(PropTypes.string).isRequired,
   updatedAt: PropTypes.string.isRequired,
 };
-
-export default Post;

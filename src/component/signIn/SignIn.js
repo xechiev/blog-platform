@@ -1,8 +1,12 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
+import { Alert } from "react-bootstrap";
+import ApiService from "../../apiService/ApiService";
+import { loggedIn, isErrorSignIn } from "../../redux/actions/actions";
 
 import classes from "./SignIn.module.scss";
 
@@ -19,12 +23,32 @@ export default function SignIn() {
   } = useForm({
     resolver: yupResolver(SignupSchema),
   });
+  const dispatch = useDispatch();
+  const state = useSelector((store) => store);
+  const { showErrorSignIn, redirect } = state;
 
-  const onSubmit = (data) => console.log(data);
+  const newApi = new ApiService();
 
+  const onSubmit = (data) => {
+    newApi.authenticationUser(data).then((res) => {
+      dispatch(isErrorSignIn(false));
+      if (res.errors) {
+        dispatch(isErrorSignIn(true));
+      } else {
+        dispatch(loggedIn(true));
+        dispatch(isErrorSignIn(false));
+      }
+    });
+  };
   return (
     <div className={classes.body}>
       <div className={classes.wrapper}>
+        {showErrorSignIn && (
+          <Alert variant="danger" className={classes.danger}>
+            Invalid email or password!
+          </Alert>
+        )}
+        {redirect ? <Redirect to="/articles/" /> : " "}
         <h5 className={classes.name}>Sign In</h5>
         <form onSubmit={handleSubmit(onSubmit)}>
           <h6 className={classes.title}>Email address</h6>
@@ -34,14 +58,18 @@ export default function SignIn() {
             type="email"
             placeholder="alex@example.com"
           />
-          {errors.email && <p>{errors.email.message}</p>}
+          {errors.email && (
+            <p className={classes.error}>{errors.email.message}</p>
+          )}
           <h6 className={classes.title}>Password</h6>
           <input
             {...register("password")}
             className={classes.form}
             type="password"
           />
-          {errors.password && <p>{errors.password.message}</p>}
+          {errors.password && (
+            <p className={classes.error}>{errors.password.message}</p>
+          )}
           <button type="submit" className={classes.submit}>
             Login
           </button>

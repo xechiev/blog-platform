@@ -51,6 +51,13 @@
   padding-left: 8px;
   margin-bottom: 12px;
 }
+.error {
+  color: #bf1650;
+}
+.error::before {
+  display: inline;
+  content: "⚠ ";
+}
 
 .haveAccount {
   color: #8C8C8C;

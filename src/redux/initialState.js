@@ -6,5 +6,7 @@ export const initialState = {
   totalCount: 0,
   togglePost: false,
   isLoaded: false,
-  isError: false,
+  showErrorSignIn: false,
+  showAlert: false,
+  redirect: false,
 };

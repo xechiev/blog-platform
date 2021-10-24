@@ -1,7 +1,6 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
-import { Button } from "react-bootstrap";
 import classNames from "classnames";
 import rectangle from "../../img/rectangle.svg";
 
