@@ -2,8 +2,8 @@ export const SET_POSTS_DATA = "SET_POSTS_DATA";
 export const GET_NEXT_PAGE = "GET_NEXT_PAGE";
 export const SET_ARTICLE = "GET_ARTICLE";
 export const LOGGED_IN = "LOGGED_IN";
-export const IS_ERROR_SIGN_IN = "IS_ERROR_SIGN_IN";
-export const SHOW_ALERT = "SHOW_ALERT";
+export const PROFILE_UPDATED = "PROFILE_UPDATED";
+export const TOGGLE_ARTICLE = "TOGGLE_ARTICLE";
 
 export const setPostsData = (posts) => ({
   type: SET_POSTS_DATA,
@@ -25,12 +25,12 @@ export const loggedIn = (num) => ({
   payload: num,
 });
 
-export const isErrorSignIn = (num) => ({
-  type: IS_ERROR_SIGN_IN,
+export const updatedProfile = (num) => ({
+  type: PROFILE_UPDATED,
   payload: num,
 });
 
-export const showAlert = (num) => ({
-  type: SHOW_ALERT,
+export const toggleArticleComponent = (num) => ({
+  type: TOGGLE_ARTICLE,
   payload: num,
 });

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -9,7 +9,7 @@ import { Alert } from "react-bootstrap";
 import ApiService from "../../apiService/ApiService";
 
 import classes from "./NewAccount.module.scss";
-import { loggedIn, showAlert } from "../../redux/actions/actions";
+import { loggedIn } from "../../redux/actions/actions";
 
 const SignupSchema = yup.object().shape({
   username: yup.string().required().min(3).max(20),
@@ -32,6 +32,8 @@ export default function NewAccount() {
   const dispatch = useDispatch();
   const state = useSelector((store) => store);
   const { isLoggedIn } = state;
+  const [forward, setForward] = useState(false);
+  const [errorSignIn, setErrorSignIn] = useState(false);
 
   const newApi = new ApiService();
 
@@ -42,9 +44,17 @@ export default function NewAccount() {
     newApi.registerUser(data).then((res) => {
       dispatch(loggedIn(true));
       localStorage.setItem("user", JSON.stringify(res.user));
+
       setTimeout(() => {
-        dispatch(showAlert(true));
-      }, 2000);
+        setForward(true);
+      }, 3000);
+
+      setForward(false);
+
+      if (res === "error") {
+        dispatch(loggedIn(false));
+        setErrorSignIn(true);
+      }
     });
   };
 
@@ -55,10 +65,15 @@ export default function NewAccount() {
           <Alert variant="primary" dismiss className={classes.alert}>
             Registration was successful!
           </Alert>
-          {showAlert && <Redirect to="/articles/" />}
+          {forward && <Redirect to="/articles" />}
         </>
       ) : (
         <div className={classes.wrapper}>
+          {errorSignIn && (
+            <Alert variant="danger" dismiss className={classes.alert422}>
+              Username or email has already been taken!
+            </Alert>
+          )}
           <h5 className={classes.name}>Create new account</h5>
           <form onSubmit={handleSubmit(onSubmit)}>
             <h6 className={classes.title}>Username</h6>

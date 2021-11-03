@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -6,7 +6,7 @@ import * as yup from "yup";
 import { Link, Redirect } from "react-router-dom";
 import { Alert } from "react-bootstrap";
 import ApiService from "../../apiService/ApiService";
-import { loggedIn, isErrorSignIn } from "../../redux/actions/actions";
+import { loggedIn } from "../../redux/actions/actions";
 
 import classes from "./SignIn.module.scss";
 
@@ -24,26 +24,29 @@ export default function SignIn() {
     resolver: yupResolver(SignupSchema),
   });
   const dispatch = useDispatch();
-  const state = useSelector((store) => store);
-  const { showErrorSignIn, redirect } = state;
+
+  const [redirect, setRedirect] = useState(false);
+  const [errorSignIn, setErrorSignIn] = useState(false);
 
   const newApi = new ApiService();
 
   const onSubmit = (data) => {
     newApi.authenticationUser(data).then((res) => {
-      dispatch(isErrorSignIn(false));
+      setErrorSignIn(false);
       if (res.errors) {
-        dispatch(isErrorSignIn(true));
+        setErrorSignIn(true);
       } else {
+        localStorage.setItem("user", JSON.stringify(res.user));
         dispatch(loggedIn(true));
-        dispatch(isErrorSignIn(false));
+        setRedirect(true);
+        setErrorSignIn(false);
       }
     });
   };
   return (
     <div className={classes.body}>
       <div className={classes.wrapper}>
-        {showErrorSignIn && (
+        {errorSignIn && (
           <Alert variant="danger" className={classes.danger}>
             Invalid email or password!
           </Alert>
@@ -75,6 +78,7 @@ export default function SignIn() {
           </button>
           <span className={classes.haveAccount}>
             Don’t have an account?
+            {" "}
             <Link to="/newAccount" className={classes.signIn}>
               Sign Up.
             </Link>

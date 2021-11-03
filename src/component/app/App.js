@@ -12,14 +12,22 @@ import NewArticle from "../newArticle/NewArticle";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import classes from "./App.module.scss";
+import { loggedIn } from "../../redux/actions/actions";
+import EditArticle from "../editArticle/EditArticle";
 
 export default function App() {
   const dispatch = useDispatch();
   const state = useSelector((store) => store);
-  const { dataPosts, totalCount, currentPage } = state;
+  const { isLoggedIn, dataPosts } = state;
 
   useEffect(() => {
     dispatch(getPostsData());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (localStorage.getItem("user")) {
+      dispatch(loggedIn(true));
+    }
   }, [dispatch]);
 
   return (
@@ -28,12 +36,11 @@ export default function App() {
       <div className={classes.app}>
         <Route path="/" exact render={() => <PostList />} />
         <Route path="/articles/" exact render={() => <PostList />} />
+        <Route path="/articles/:slug" exact render={() => <Article />} />
         <Route
-          path="/articles/:slug"
-          render={({ match }) => {
-            const { slug } = match.params;
-            return <Article slugItem={slug} />;
-          }}
+          path="/articles/:slug/edit"
+          exact
+          render={() => <EditArticle />}
         />
         <Route path="/newAccount" exact component={NewAccount} />
         <Route path="/signIn" exact component={SignIn} />

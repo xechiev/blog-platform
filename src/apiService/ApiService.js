@@ -1,5 +1,7 @@
 export default class ApiService {
-  _domain = "https://cirosantilli-realworld-express.herokuapp.com/api/";
+  _domain = "https://conduit-api-realworld.herokuapp.com/api/";
+
+  _domain2 = "https://api.realworld.io/api/";
 
   async getResourse(url) {
     const result = await fetch(`${this._domain}${url}`);
@@ -16,18 +18,27 @@ export default class ApiService {
     return result;
   }
 
+  async getArticle(slug) {
+    const result = await this.getResourse(`articles/${slug}`);
+    return result;
+  }
+
   async registerUser(data) {
-    const result = await fetch(`${this._domain}${"users"}`, {
+    let result = await fetch(`${this._domain2}${"users"}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ user: data }),
     });
-    const request = result.json();
-    return request;
+
+    if (result.status === 422) {
+      result = "error";
+      return result;
+    }
+    return result.json();
   }
 
   async authenticationUser(data) {
-    const result = await fetch(`${this._domain}${"users/login"}`, {
+    const result = await fetch(`${this._domain2}${"users/login"}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ user: data }),
@@ -37,7 +48,7 @@ export default class ApiService {
   }
 
   async updatedUser(data, token) {
-    const result = await fetch(`${this._domain}${"users"}`, {
+    const result = await fetch(`${this._domain2}${"user"}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -49,18 +60,35 @@ export default class ApiService {
     return request;
   }
 
-  async updatedArticle(data) {
-    const result = await fetch(`${this._domain}${"articles"}`, {
+  async createArticle(data, token) {
+    let result = await fetch(`${this._domain2}${"articles"}`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${token}`,
+      },
+      body: JSON.stringify({ article: data }),
+    });
+
+    if (result.status === 422) {
+      result = "error";
+      return result;
+    }
+
+    return result.json();
+  }
+
+  async updatedArticle(data, slug, token) {
+    const result = await fetch(`${this._domain2}${"articles"}${slug}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${token}`,
+      },
       body: JSON.stringify({ user: data }),
     });
+
     const request = result.json();
     return request;
   }
-
-  // async getArticle(value) {
-  //   const result = await this.getResourse(`articles/${value}`);
-  //   return result;
-  // }
 }

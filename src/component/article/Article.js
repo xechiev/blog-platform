@@ -1,36 +1,56 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router";
 import ReactMarkdown from "react-markdown";
-import classNames from "classnames";
-import { Alert } from "react-bootstrap";
+import { Spinner } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { getWholeArticle } from "../../redux/asyncActions/asyncActions";
+import { toggleArticleComponent } from "../../redux/actions/actions";
 import Post from "../post/Post";
 import Button from "../button/Button";
 
 import classes from "./Article.module.scss";
 
-export default function Article({ slugItem }) {
+export default function Article() {
   const state = useSelector((store) => store);
-  const { dataPosts } = state;
+  const { article, isLoaded, isLoggedIn } = state;
 
-  const pos = dataPosts.find((item) => item.slug === slugItem);
+  const dispatch = useDispatch();
+  const params = useParams();
+  const { slug } = params;
+
+  useEffect(() => {
+    dispatch(getWholeArticle(slug));
+  }, [slug, dispatch]);
+
+  const switchEdit = () => {
+    dispatch(toggleArticleComponent(true));
+  };
 
   return (
     <div className={classes.body}>
       <div className={classes.wrapper}>
-        <Post {...pos} />
+        {isLoaded ? (
+          <Post {...article} />
+        ) : (
+          <Spinner
+            animation="border"
+            variant="primary"
+            className={classes.spin}
+          />
+        )}
         <div className={classes.markdown}>
-          <ReactMarkdown className={classes.body}>{pos.body}</ReactMarkdown>
+          <ReactMarkdown className={classes.body}>{article.body}</ReactMarkdown>
         </div>
-        <div className={classes.editDelete}>
-          {Button("Delete", "F5222D", 31)}
-          {Button("Edit", "52C41A", 31)}
-        </div>
+        {isLoggedIn && (
+          <div className={classes.editDelete}>
+            {Button("Delete", "F5222D", 31)}
+            <Link to={`/articles/${slug}/edit`}>
+              {Button("Edit", "52C41A", 31, switchEdit)}
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );
 }
-
-Article.propTypes = {
-  slugItem: PropTypes.string.isRequired,
-};

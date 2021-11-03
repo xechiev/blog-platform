@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import format from "date-fns/format";
 import classes from "./Post.module.scss";
 import heart from "../../img/Vector.svg";
 import rectangle from "../../img/rectangle.svg";
+import ApiService from "../../apiService/ApiService";
+
+const newApi = new ApiService();
 
 export default function Post({
   title,
@@ -40,9 +43,9 @@ export default function Post({
   );
 }
 
-Post.propTypes = {
-  title: PropTypes.string.isRequired,
-  tagList: PropTypes.arrayOf(PropTypes.string).isRequired,
-  author: PropTypes.objectOf(PropTypes.string).isRequired,
-  updatedAt: PropTypes.string.isRequired,
-};
+// Post.propTypes = {
+//   title: PropTypes.string.isRequired,
+//   tagList: PropTypes.arrayOf(PropTypes.string).isRequired,
+//   author: PropTypes.objectOf(PropTypes.string).isRequired,
+//   updatedAt: PropTypes.string.isRequired,
+// };

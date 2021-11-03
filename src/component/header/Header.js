@@ -1,14 +1,31 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
 import classNames from "classnames";
+import { loggedIn, toggleArticleComponent } from "../../redux/actions/actions";
 import rectangle from "../../img/rectangle.svg";
 
 import classes from "./Header.module.scss";
 
 export default function Header() {
+  const dispatch = useDispatch();
   const state = useSelector((store) => store);
   const { isLoggedIn } = state;
+  let userHeaderInfo = "";
+
+  if (isLoggedIn) {
+    const dataUser = localStorage.getItem("user");
+    userHeaderInfo = JSON.parse(dataUser);
+  }
+
+  const logoutUser = () => {
+    dispatch(loggedIn(false));
+    localStorage.removeItem("user");
+  };
+
+  const switchCreat = () => {
+    dispatch(toggleArticleComponent(false));
+  };
 
   return (
     <div className={classes.wrapper}>
@@ -18,18 +35,31 @@ export default function Header() {
       {isLoggedIn ? (
         <div className={classes.profile}>
           <NavLink to="/new-article">
-            <button type="button" className={classes.create}>
+            <button
+              type="button"
+              className={classes.create}
+              onClick={switchCreat}
+            >
               Create article
             </button>
           </NavLink>
-          <h6 className={classes.name}>John Doe</h6>
           <NavLink to="/editProfile">
-            <img src={rectangle} alt="avatar" className={classes.avatar} />
+            <h6 className={classes.name}>
+              {userHeaderInfo ? userHeaderInfo.username : "John Snow"}
+            </h6>
+          </NavLink>
+          <NavLink to="/editProfile">
+            <img
+              src={userHeaderInfo ? userHeaderInfo.image : rectangle}
+              alt="avatar"
+              className={classes.avatar}
+            />
           </NavLink>
           <NavLink to="/articles/">
             <button
               type="button"
               className={classNames(classes.logOut, classes.enterButton)}
+              onClick={logoutUser}
             >
               Log Out
             </button>

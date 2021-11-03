@@ -3,8 +3,8 @@ import {
   SET_POSTS_DATA,
   SET_ARTICLE,
   LOGGED_IN,
-  IS_ERROR_SIGN_IN,
-  SHOW_ALERT,
+  PROFILE_UPDATED,
+  TOGGLE_ARTICLE,
 } from "../actions/actions";
 
 function reducer(state = initialState, action) {
@@ -20,23 +20,24 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         article: action.payload,
+        isLoaded: true,
       };
     case LOGGED_IN:
       return {
         ...state,
         isLoggedIn: action.payload,
-        redirect: true,
       };
-    case IS_ERROR_SIGN_IN:
+    case PROFILE_UPDATED:
       return {
         ...state,
-        showErrorSignIn: action.payload,
+        profileUpdated: action.payload,
       };
-    case SHOW_ALERT:
+    case TOGGLE_ARTICLE:
       return {
         ...state,
-        showAlert: action.payload,
+        toggleArticle: action.payload,
       };
+
     default:
       return state;
   }

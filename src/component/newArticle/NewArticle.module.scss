@@ -44,6 +44,10 @@
 }
 .tagsBody {
   display: flex;
+}
+.tagGroup {
+  display: flex;
+  flex-direction: column;
   
 }
 .tags {
@@ -82,4 +86,18 @@
   &:disabled {
     opacity: 0.4;
   }
+}
+.errors {
+  color: #bf1650;
+}
+.errors::before {
+  display: inline;
+  content: "⚠ ";
+}
+.inputDelete {
+  display: flex;
+  flex-direction: row;
+}
+.alert {
+
 }

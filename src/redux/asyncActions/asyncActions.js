@@ -1,5 +1,5 @@
 import ApiService from "../../apiService/ApiService";
-import { setPostsData, setArticle, togglePost } from "../actions/actions";
+import { setPostsData, setArticle } from "../actions/actions";
 
 const newApiService = new ApiService();
 
@@ -12,6 +12,5 @@ export const getPostsData = () => (dispatch) => {
 export const getWholeArticle = (value) => (dispatch) => {
   newApiService.getArticle(value).then((res) => {
     dispatch(setArticle(res.article));
-    // dispatch(togglePost(true));
   });
 };
