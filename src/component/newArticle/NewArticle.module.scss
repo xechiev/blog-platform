@@ -36,7 +36,8 @@
   margin-bottom: 21px;
   padding-left: 12px;
   font-size: 16px;
-  color: #BFBFBF;
+  height: 40px;
+  color: rgba(0, 0, 0, 0.75);
 }
 .textarea {
   min-height: 168px;
@@ -48,7 +49,12 @@
 .tagGroup {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  align-self: center;
   
+}
+li {
+  list-style-type: none;
 }
 .tags {
   width: 300px;
@@ -58,9 +64,11 @@
   box-sizing: border-box;
   border-radius: 4px;
   padding-left: 12px;
+  padding-top: 5px;
   color: #BFBFBF;
   margin-bottom: 5px;
   margin-right: 18px;
+  color: rgba(0, 0, 0, 0.75);
 }
 .submit {
   padding: 0;
@@ -98,6 +106,8 @@
   display: flex;
   flex-direction: row;
 }
-.alert {
 
+
+::-webkit-input-placeholder { /* WebKit browsers */
+  color:    #BFBFBF;
 }

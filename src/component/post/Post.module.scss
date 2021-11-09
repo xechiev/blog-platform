@@ -18,12 +18,15 @@
   width: auto;
   margin-bottom: 6px;
 }
+
 .heart {
-  height: 14.2px;
-  width: 16px;
+  height: 18px;
+  width: 22px;
   align-self: center;
   margin-left: 13px;
   cursor: pointer;
+  color: rgba(0, 0, 0, 0.75);
+
 }
 .likes {
   align-self: center;
@@ -64,10 +67,7 @@
   transition: all 0.5s ease;
   cursor: pointer;
   color: rgba(0, 0, 0, 0.75);
-  &:hover {
-    color: #52c41a;
-    border-color: #52c41a;
-  }
+
 }
 .article {
   width: 100%;

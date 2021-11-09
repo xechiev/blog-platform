@@ -91,4 +91,48 @@ export default class ApiService {
     const request = result.json();
     return request;
   }
+
+  async deleteArticle(slug, token) {
+    const result = await fetch(`${this._domain}${"articles/"}${slug}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${token}`,
+      },
+    });
+
+    const request = result.json();
+    return request;
+  }
+
+  async favoriteArticle(slug, token) {
+    const result = await fetch(
+      `${this._domain}${"articles/"}${slug}/favorite`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${token}`,
+        },
+        body: "",
+      }
+    );
+    const request = result.json();
+    return request;
+  }
+
+  async unFavoriteArticle(slug, token) {
+    const result = await fetch(
+      `${this._domain}${"articles/"}${slug}/favorite`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${token}`,
+        },
+      }
+    );
+    const request = result.json();
+    return request;
+  }
 }
