@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { Alert } from "react-bootstrap";
 import ApiService from "../../apiService/ApiService";
 import { updatedProfile } from "../../redux/actions/actions";
@@ -25,10 +25,11 @@ export default function EditProfile() {
   } = useForm({
     resolver: yupResolver(SignupSchema),
   });
-
   const dispatch = useDispatch();
   const state = useSelector((store) => store);
   const { profileUpdated } = state;
+  const [redirect, setRedirect] = useState(false);
+
   const newApi = new ApiService();
 
   const onSubmit = (data) => {
@@ -36,6 +37,13 @@ export default function EditProfile() {
     const token = JSON.parse(userInfo);
     newApi.updatedUser(data, token.token).then((res) => {
       localStorage.setItem("user", JSON.stringify(res.user));
+
+      dispatch(updatedProfile(true));
+
+      setTimeout(() => {
+        setRedirect(true);
+      }, 2000);
+
       console.log(res);
     });
   };
@@ -47,6 +55,7 @@ export default function EditProfile() {
           <Alert variant="primary" dismiss className={classes.alert}>
             Your profile has been updated!
           </Alert>
+          {redirect && <Redirect to="/articles" />}
         </>
       ) : (
         <div className={classes.wrapper}>

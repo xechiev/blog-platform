@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -30,6 +31,7 @@ export default function NewAccount() {
     resolver: yupResolver(SignupSchema),
   });
   const dispatch = useDispatch();
+  const history = useHistory();
   const state = useSelector((store) => store);
   const { isLoggedIn } = state;
   const [forward, setForward] = useState(false);
@@ -47,11 +49,13 @@ export default function NewAccount() {
 
       setTimeout(() => {
         setForward(true);
+        history.go(0);
       }, 3000);
 
       setForward(false);
 
       if (res === "error") {
+        localStorage.removeItem("user");
         dispatch(loggedIn(false));
         setErrorSignIn(true);
       }

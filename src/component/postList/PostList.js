@@ -13,7 +13,7 @@ const PostList = () => {
   return (
     <div className={classes.wrapper}>
       <ul className={classes.postList}>
-        {dataPosts.slice(0, 5).map((post) => (
+        {dataPosts.map((post) => (
           <li className={classes.post} key={Math.random()}>
             <Link to={`/articles/${post.slug}`}>
               <Post {...post} />

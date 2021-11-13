@@ -1,18 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
-import { useForm, useFieldArray, Controller } from "react-hook-form";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { useParams, useHistory } from "react-router";
+import { useForm, useFieldArray } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import classNames from "classnames";
 import { Alert } from "react-bootstrap";
-import TextareaMarkdown from "textarea-markdown";
-import useDebounce from "../../hooks/useDebounce";
 import ApiService from "../../apiService/ApiService";
 import Button from "../button/Button";
-import { toggleArticleComponent } from "../../redux/actions/actions";
-import { getWholeArticle } from "../../redux/asyncActions/asyncActions";
 
 import classes from "./NewArticle.module.scss";
 
@@ -24,6 +20,8 @@ const SignupSchema = yup.object().shape({
 });
 
 export default function NewArticle() {
+  const state = useSelector((store) => store);
+  const { article, isLoggedIn, toggleArticle } = state;
   const {
     register,
     formState: { errors },
@@ -31,6 +29,9 @@ export default function NewArticle() {
     reset,
     control,
   } = useForm({
+    defaultValues: {
+      tagList: toggleArticle ? article.tagList : [],
+    },
     resolver: yupResolver(SignupSchema),
   });
 
@@ -38,42 +39,59 @@ export default function NewArticle() {
     control,
     name: "tagList",
   });
-  // const dispatch = useDispatch();
-  // const params = useParams();
-  // const { slug } = params;
 
-  const state = useSelector((store) => store);
-  const { article, isLoggedIn, toggleArticle } = state;
-
-  // const [inputValue, setInputValue] = useState([]);
   const [errorTitle, setErrorTitle] = useState(false);
   const [articleSend, setArticleSend] = useState(false);
-  // const [inputList, setInputList] = useState([]);
-  // const [arr, setArr] = useState(toggleArticle ? article.tagList : []);
-
-  // const debouncedInputValue = useDebounce(inputValue, 500);
+  const [redirect, setRedirect] = useState(false);
+  const params = useParams();
+  const history = useHistory();
+  const { slug } = params;
 
   const newApi = new ApiService();
 
   const onSubmit = (data) => {
     const userInfo = localStorage.getItem("user");
-    const token = JSON.parse(userInfo);
+    const info = JSON.parse(userInfo);
+    const { token } = info;
 
-    // data.tagList = debouncedInputValue;
-    newApi.createArticle(data, token.token).then((res) => {
-      console.log(data);
-      setErrorTitle(false);
-      if (res === "error") {
-        setErrorTitle(true);
-      }
-      setArticleSend(true);
-      setTimeout(() => {
-        setArticleSend(false);
-      }, 2000);
-    });
-    // setInputValue([]);
-    // setInputList([]);
-    reset({});
+    const newArr = data.tagList.map((el) => el.val);
+
+    data.tagList = newArr;
+
+    if (toggleArticle) {
+      newApi.updatedArticle(data, slug, token).then((res) => {
+        setErrorTitle(false);
+        setArticleSend(true);
+
+        if (res === "error") {
+          setErrorTitle(true);
+        }
+
+        setTimeout(() => {
+          setRedirect(true);
+          setArticleSend(false);
+          history.go(0);
+        }, 3000);
+      });
+
+      reset({});
+    } else {
+      newApi.createArticle(data, token).then((res) => {
+        setErrorTitle(false);
+        setArticleSend(true);
+        if (res === "error") {
+          setErrorTitle(true);
+        }
+
+        setTimeout(() => {
+          setArticleSend(false);
+        }, 2000);
+        setRedirect(true);
+        history.go(0);
+      });
+
+      reset({});
+    }
   };
 
   return (
@@ -81,9 +99,12 @@ export default function NewArticle() {
       <div className={classes.body}>
         <div className={classes.wrapper}>
           {articleSend ? (
-            <Alert variant="primary" className={classes.alert}>
-              {toggleArticle ? "Article edited!" : "Article created!"}
-            </Alert>
+            <>
+              <Alert variant="primary" className={classes.alert}>
+                {toggleArticle ? "Article edited!" : "Article created!"}
+              </Alert>
+              {redirect && <Redirect to="/articles" />}
+            </>
           ) : (
             <>
               <h5 className={classes.name}>
@@ -119,8 +140,6 @@ export default function NewArticle() {
                 <textarea
                   {...register("body")}
                   className={classNames(classes.form, classes.textarea)}
-                  id="editor"
-                  data-preview="#preview"
                   defaultValue={toggleArticle ? article.body : ""}
                   placeholder="Text"
                 />
@@ -130,12 +149,15 @@ export default function NewArticle() {
                 <h6 className={classes.title}>Tags</h6>
                 <div className={classes.tagsBody}>
                   <div className={classes.tagGroup}>
-                    {fields.map((item, index) => (
-                      <li key={item.id}>
+                    {fields.map((field, index) => (
+                      <li key={field.id}>
                         <input
-                          {...register(`tagList[${index}].value`)}
+                          {...register(`tagList[${index}].val`)}
                           className={classes.tags}
                           placeholder="Tag"
+                          defaultValue={
+                            toggleArticle ? article.tagList[index] : ""
+                          }
                         />
                         {Button("Delete", "F5222D", 40, () => remove(index))}
                       </li>

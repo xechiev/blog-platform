@@ -6,8 +6,6 @@ import { getWholeArticle } from "../../redux/asyncActions/asyncActions";
 
 import NewArticle from "../newArticle/NewArticle";
 
-import classes from "./EditArticle.module.scss";
-
 export default function EditArticle() {
   const dispatch = useDispatch();
   const params = useParams();

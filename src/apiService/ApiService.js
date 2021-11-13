@@ -1,10 +1,10 @@
 export default class ApiService {
-  _domain = "https://conduit-api-realworld.herokuapp.com/api/";
+  _domain = "https://api.realworld.io/api/";
 
-  _domain2 = "https://api.realworld.io/api/";
-
-  async getResourse(url) {
-    const result = await fetch(`${this._domain}${url}`);
+  async getResourse(url, page = 0) {
+    const result = await fetch(
+      `${this._domain}${url}?limit=5&offset=${page * 5}`
+    );
 
     if (!result.ok) {
       throw new Error(`Возникла ошибка ${result.status}`);
@@ -13,9 +13,34 @@ export default class ApiService {
     return await result.json();
   }
 
-  async getPostsData() {
-    const result = await this.getResourse("articles");
-    return result;
+  async getPostsData(token, page) {
+    let result = [];
+    if (token) {
+      result = await fetch(
+        `${this._domain}${"articles"}?limit=5&offset=${page * 1}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json; charset = utf-8",
+            Authorization: `Token ${token}`,
+          },
+        }
+      );
+
+      if (!result.ok) {
+        throw new Error(`Возникла ошибка ${result.status}`);
+      }
+    } else {
+      result = await fetch(
+        `${this._domain}${"articles"}?limit=5&offset=${page * 5}`
+      );
+
+      if (!result.ok) {
+        throw new Error(`Возникла ошибка ${result.status}`);
+      }
+    }
+
+    return result.json();
   }
 
   async getArticle(slug) {
@@ -24,7 +49,7 @@ export default class ApiService {
   }
 
   async registerUser(data) {
-    let result = await fetch(`${this._domain2}${"users"}`, {
+    let result = await fetch(`${this._domain}${"users"}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ user: data }),
@@ -38,7 +63,7 @@ export default class ApiService {
   }
 
   async authenticationUser(data) {
-    const result = await fetch(`${this._domain2}${"users/login"}`, {
+    const result = await fetch(`${this._domain}${"users/login"}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ user: data }),
@@ -48,7 +73,7 @@ export default class ApiService {
   }
 
   async updatedUser(data, token) {
-    const result = await fetch(`${this._domain2}${"user"}`, {
+    const result = await fetch(`${this._domain}${"user"}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -61,7 +86,7 @@ export default class ApiService {
   }
 
   async createArticle(data, token) {
-    let result = await fetch(`${this._domain2}${"articles"}`, {
+    let result = await fetch(`${this._domain}${"articles"}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -79,7 +104,7 @@ export default class ApiService {
   }
 
   async updatedArticle(data, slug, token) {
-    const result = await fetch(`${this._domain2}${"articles"}${slug}`, {
+    const result = await fetch(`${this._domain}${"articles/"}${slug}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -106,32 +131,26 @@ export default class ApiService {
   }
 
   async favoriteArticle(slug, token) {
-    const result = await fetch(
-      `${this._domain}${"articles/"}${slug}/favorite`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Token ${token}`,
-        },
-        body: "",
-      }
-    );
+    const result = await fetch(`${this._domain}articles/${slug}/favorite`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${token}`,
+      },
+    });
     const request = result.json();
     return request;
   }
 
   async unFavoriteArticle(slug, token) {
-    const result = await fetch(
-      `${this._domain}${"articles/"}${slug}/favorite`,
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Token ${token}`,
-        },
-      }
-    );
+    console.log(slug);
+    const result = await fetch(`${this._domain}articles/${slug}/favorite`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${token}`,
+      },
+    });
     const request = result.json();
     return request;
   }

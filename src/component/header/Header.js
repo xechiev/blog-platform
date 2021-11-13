@@ -51,7 +51,7 @@ export default function Header() {
           <NavLink to="/editProfile">
             <img
               src={userHeaderInfo ? userHeaderInfo.image : rectangle}
-              alt="avatar"
+              alt="foto"
               className={classes.avatar}
             />
           </NavLink>

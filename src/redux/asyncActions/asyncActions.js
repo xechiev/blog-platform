@@ -1,11 +1,12 @@
 import ApiService from "../../apiService/ApiService";
-import { setPostsData, setArticle } from "../actions/actions";
+import { setPostsData, setArticle, setTotalArticles } from "../actions/actions";
 
 const newApiService = new ApiService();
 
-export const getPostsData = () => (dispatch) => {
-  newApiService.getPostsData().then((res) => {
+export const getPostsData = (token = 0, page = 1) => (dispatch) => {
+  newApiService.getPostsData(token, page).then((res) => {
     dispatch(setPostsData(res.articles));
+    dispatch(setTotalArticles(res.articlesCount));
   });
 };
 

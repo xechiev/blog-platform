@@ -5,6 +5,7 @@ import {
   LOGGED_IN,
   PROFILE_UPDATED,
   TOGGLE_ARTICLE,
+  TOTAL_COUNT,
 } from "../actions/actions";
 
 function reducer(state = initialState, action) {
@@ -13,7 +14,11 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         dataPosts: action.payload,
-        totalCount: action.payload.length,
+      };
+    case TOTAL_COUNT:
+      return {
+        ...state,
+        totalCount: action.payload,
       };
 
     case SET_ARTICLE:
@@ -37,7 +42,6 @@ function reducer(state = initialState, action) {
         ...state,
         toggleArticle: action.payload,
       };
-
     default:
       return state;
   }

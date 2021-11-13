@@ -1,5 +1,6 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */
 import React, { useState } from "react";
-import { useParams } from "react-router";
+import { useHistory, useParams } from "react-router";
 import PropTypes from "prop-types";
 import format from "date-fns/format";
 import { IoIosHeartEmpty } from "react-icons/io";
@@ -22,15 +23,19 @@ export default function Post({
   favorited,
 }) {
   const params = useParams();
+  const history = useHistory();
   const { slug } = params;
 
   const handleClick = () => {
     const userInfo = localStorage.getItem("user");
-    const token = JSON.parse(userInfo);
+    const info = JSON.parse(userInfo);
+    const { token } = info;
     if (favorited) {
-      newApi.unFavoriteArticle(slug, token.token);
+      newApi.unFavoriteArticle(slug, token);
+      history.go(0);
     } else {
-      newApi.favoriteArticle(slug, token.token);
+      newApi.favoriteArticle(slug, token);
+      history.go(0);
     }
   };
 
@@ -39,7 +44,12 @@ export default function Post({
       <div className={classes.body}>
         <div className={classes.titleLike}>
           <h5 className={classes.title}>{title}</h5>
-          <heart className={classes.heart} onClick={handleClick} />
+          <img
+            src={heart}
+            alt="heart"
+            onClick={handleClick}
+            className={classes.heart}
+          />
           <span className={classes.likes}>{favoritesCount}</span>
         </div>
         {tagList.map((tag) => (

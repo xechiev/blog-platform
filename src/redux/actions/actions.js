@@ -4,6 +4,7 @@ export const SET_ARTICLE = "GET_ARTICLE";
 export const LOGGED_IN = "LOGGED_IN";
 export const PROFILE_UPDATED = "PROFILE_UPDATED";
 export const TOGGLE_ARTICLE = "TOGGLE_ARTICLE";
+export const TOTAL_COUNT = "TOTAL_COUNT";
 
 export const setPostsData = (posts) => ({
   type: SET_POSTS_DATA,
@@ -32,5 +33,10 @@ export const updatedProfile = (num) => ({
 
 export const toggleArticleComponent = (num) => ({
   type: TOGGLE_ARTICLE,
+  payload: num,
+});
+
+export const setTotalArticles = (num) => ({
+  type: TOTAL_COUNT,
   payload: num,
 });

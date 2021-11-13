@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
+import { Redirect, useParams, useHistory } from "react-router";
 import ReactMarkdown from "react-markdown";
 import { Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -8,6 +8,7 @@ import { Popconfirm, message } from "antd";
 import { getWholeArticle } from "../../redux/asyncActions/asyncActions";
 import { toggleArticleComponent } from "../../redux/actions/actions";
 import Post from "../post/Post";
+
 import ApiService from "../../apiService/ApiService";
 import Button from "../button/Button";
 import "antd/dist/antd.css";
@@ -17,9 +18,11 @@ import classes from "./Article.module.scss";
 export default function Article() {
   const state = useSelector((store) => store);
   const { article, isLoaded, isLoggedIn } = state;
+  const [foraward, setForaward] = useState(false);
 
   const dispatch = useDispatch();
   const params = useParams();
+  const history = useHistory();
   const { slug } = params;
 
   const newApi = new ApiService();
@@ -35,7 +38,11 @@ export default function Article() {
   };
 
   const confirm = () => {
-    message.info("Clicked on Yes.");
+    message.info("Article deleted!");
+    setForaward(true);
+    setTimeout(() => {
+      history.go(0)
+    }, 2000)
   };
 
   const deleteArticle = () => {
@@ -48,6 +55,7 @@ export default function Article() {
   return (
     <div className={classes.body}>
       <div className={classes.wrapper}>
+        {foraward && <Redirect to="/articles" />}
         {isLoaded ? (
           <Post {...article} />
         ) : (
