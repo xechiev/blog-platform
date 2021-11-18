@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -79,7 +79,7 @@ export default function SignIn() {
           <span className={classes.haveAccount}>
             Don’t have an account?
             {" "}
-            <Link to="/newAccount" className={classes.signIn}>
+            <Link to="/sign-up" className={classes.signIn}>
               Sign Up.
             </Link>
           </span>

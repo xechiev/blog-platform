@@ -10,6 +10,7 @@ export default function Pagin(total, num, current, func) {
     <div className={classes.wrapper}>
       <Pagination
         total={total}
+        pageSize={5}
         defaultCurrent={num}
         current={current}
         onChange={(page) => func(page)}

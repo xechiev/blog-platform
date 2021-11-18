@@ -4,7 +4,6 @@ import { useParams, useHistory } from "react-router";
 import { useForm, useFieldArray } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { Redirect } from "react-router-dom";
 import classNames from "classnames";
 import { Alert } from "react-bootstrap";
 import ApiService from "../../apiService/ApiService";
@@ -26,7 +25,6 @@ export default function NewArticle() {
     register,
     formState: { errors },
     handleSubmit,
-    reset,
     control,
   } = useForm({
     defaultValues: {
@@ -42,7 +40,6 @@ export default function NewArticle() {
 
   const [errorTitle, setErrorTitle] = useState(false);
   const [articleSend, setArticleSend] = useState(false);
-  const [redirect, setRedirect] = useState(false);
   const params = useParams();
   const history = useHistory();
   const { slug } = params;
@@ -68,29 +65,19 @@ export default function NewArticle() {
         }
 
         setTimeout(() => {
-          setRedirect(true);
           setArticleSend(false);
-          history.go(0);
         }, 3000);
       });
-
-      reset({});
     } else {
       newApi.createArticle(data, token).then((res) => {
         setErrorTitle(false);
-        setArticleSend(true);
+        setArticleSend(false);
+        history.push(`/articles/${res.article.slug}`);
+
         if (res === "error") {
           setErrorTitle(true);
         }
-
-        setTimeout(() => {
-          setArticleSend(false);
-        }, 2000);
-        setRedirect(true);
-        history.go(0);
       });
-
-      reset({});
     }
   };
 
@@ -103,7 +90,6 @@ export default function NewArticle() {
               <Alert variant="primary" className={classes.alert}>
                 {toggleArticle ? "Article edited!" : "Article created!"}
               </Alert>
-              {redirect && <Redirect to="/articles" />}
             </>
           ) : (
             <>

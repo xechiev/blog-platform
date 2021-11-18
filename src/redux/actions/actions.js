@@ -5,6 +5,8 @@ export const LOGGED_IN = "LOGGED_IN";
 export const PROFILE_UPDATED = "PROFILE_UPDATED";
 export const TOGGLE_ARTICLE = "TOGGLE_ARTICLE";
 export const TOTAL_COUNT = "TOTAL_COUNT";
+export const LIKE = "LIKE";
+export const DIS_LIKE = "DIS_LIKE";
 
 export const setPostsData = (posts) => ({
   type: SET_POSTS_DATA,
@@ -38,5 +40,15 @@ export const toggleArticleComponent = (num) => ({
 
 export const setTotalArticles = (num) => ({
   type: TOTAL_COUNT,
+  payload: num,
+});
+
+export const setLike = (num) => ({
+  type: LIKE,
+  payload: num,
+});
+
+export const setDisLike = (num) => ({
+  type: DIS_LIKE,
   payload: num,
 });

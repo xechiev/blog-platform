@@ -1,3 +1,5 @@
+import { setLike, setDisLike } from "../redux/actions/actions";
+
 export default class ApiService {
   _domain = "https://api.realworld.io/api/";
 
@@ -16,23 +18,20 @@ export default class ApiService {
   async getPostsData(token, page) {
     let result = [];
     if (token) {
-      result = await fetch(
-        `${this._domain}${"articles"}?limit=5&offset=${page * 1}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json; charset = utf-8",
-            Authorization: `Token ${token}`,
-          },
-        }
-      );
+      result = await fetch(`${this._domain}${"articles"}?limit=5&offset=${0}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json; charset = utf-8",
+          Authorization: `Token ${token}`,
+        },
+      });
 
       if (!result.ok) {
         throw new Error(`Возникла ошибка ${result.status}`);
       }
     } else {
       result = await fetch(
-        `${this._domain}${"articles"}?limit=5&offset=${page * 5}`
+        `${this._domain}${"articles"}?limit=5&offset=${page}`
       );
 
       if (!result.ok) {
@@ -138,12 +137,12 @@ export default class ApiService {
         Authorization: `Token ${token}`,
       },
     });
-    const request = result.json();
+    const request = await result.json();
+
     return request;
   }
 
   async unFavoriteArticle(slug, token) {
-    console.log(slug);
     const result = await fetch(`${this._domain}articles/${slug}/favorite`, {
       method: "DELETE",
       headers: {
@@ -151,7 +150,7 @@ export default class ApiService {
         Authorization: `Token ${token}`,
       },
     });
-    const request = result.json();
+    const request = await result.json();
     return request;
   }
 }

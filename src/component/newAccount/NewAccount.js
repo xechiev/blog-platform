@@ -15,7 +15,7 @@ import { loggedIn } from "../../redux/actions/actions";
 const SignupSchema = yup.object().shape({
   username: yup.string().required().min(3).max(20),
   email: yup.string().required().email(),
-  password: yup.string().required().min(8).max(40),
+  password: yup.string().required().min(1).max(2),
   passwordConfirmation: yup
     .string()
     .oneOf([yup.ref("password"), null], "passwords must match"),
@@ -31,7 +31,6 @@ export default function NewAccount() {
     resolver: yupResolver(SignupSchema),
   });
   const dispatch = useDispatch();
-  const history = useHistory();
   const state = useSelector((store) => store);
   const { isLoggedIn } = state;
   const [forward, setForward] = useState(false);
@@ -44,20 +43,17 @@ export default function NewAccount() {
     delete data.passwordConfirmation;
 
     newApi.registerUser(data).then((res) => {
-      dispatch(loggedIn(true));
-      localStorage.setItem("user", JSON.stringify(res.user));
-
-      setTimeout(() => {
-        setForward(true);
-        history.go(0);
-      }, 3000);
-
-      setForward(false);
+      setErrorSignIn(false);
 
       if (res === "error") {
-        localStorage.removeItem("user");
-        dispatch(loggedIn(false));
         setErrorSignIn(true);
+      } else {
+        dispatch(loggedIn(true));
+        localStorage.setItem("user", JSON.stringify(res.user));
+        setForward(false);
+        setTimeout(() => {
+          setForward(true);
+        }, 1500);
       }
     });
   };
@@ -66,7 +62,7 @@ export default function NewAccount() {
     <div className={classes.body}>
       {isLoggedIn ? (
         <>
-          <Alert variant="primary" dismiss className={classes.alert}>
+          <Alert variant="primary" className={classes.alert}>
             Registration was successful!
           </Alert>
           {forward && <Redirect to="/articles" />}
@@ -74,7 +70,7 @@ export default function NewAccount() {
       ) : (
         <div className={classes.wrapper}>
           {errorSignIn && (
-            <Alert variant="danger" dismiss className={classes.alert422}>
+            <Alert variant="danger" className={classes.alert422}>
               Username or email has already been taken!
             </Alert>
           )}

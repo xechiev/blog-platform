@@ -1,17 +1,14 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */
-import React, { useState } from "react";
-import { useHistory, useParams } from "react-router";
+import React, { useEffect, useState } from "react";
+import { Link, useParams, useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import format from "date-fns/format";
-import { IoIosHeartEmpty } from "react-icons/io";
-import heart from "../../img/Vector.svg";
-import rectangle from "../../img/rectangle.svg";
-import Vector from "../../img/Vector.svg";
+import { addLike, deleteLike } from "../../redux/asyncActions/asyncActions";
 import ApiService from "../../apiService/ApiService";
 
 import classes from "./Post.module.scss";
-
-const newApi = new ApiService();
 
 export default function Post({
   title,
@@ -21,36 +18,33 @@ export default function Post({
   updatedAt,
   favoritesCount,
   favorited,
+  slug,
 }) {
-  const params = useParams();
-  const history = useHistory();
-  const { slug } = params;
+  const dispatch = useDispatch();
 
   const handleClick = () => {
     const userInfo = localStorage.getItem("user");
     const info = JSON.parse(userInfo);
     const { token } = info;
-    if (favorited) {
-      newApi.unFavoriteArticle(slug, token);
-      history.go(0);
-    } else {
-      newApi.favoriteArticle(slug, token);
-      history.go(0);
-    }
+
+    return favorited ? dispatch(deleteLike(slug, token)) : dispatch(addLike(slug, token));
   };
 
   return (
     <div className={classes.wrapper}>
       <div className={classes.body}>
         <div className={classes.titleLike}>
-          <h5 className={classes.title}>{title}</h5>
-          <img
-            src={heart}
-            alt="heart"
-            onClick={handleClick}
-            className={classes.heart}
-          />
-          <span className={classes.likes}>{favoritesCount}</span>
+          <Link to={`/articles/${slug}`}>
+            <h5 className={classes.title}>{title}</h5>
+          </Link>
+          <div className={classes.favor}>
+            <button
+              type="button"
+              className={favorited ? classes.favorite : classes.noFavorite}
+              onClick={() => handleClick()}
+            />
+            <p className={classes.likes}>{favoritesCount}</p>
+          </div>
         </div>
         {tagList.map((tag) => (
           <div className={classes.tag} key={Math.random()}>

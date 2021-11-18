@@ -19,21 +19,35 @@
   margin-bottom: 6px;
 }
 
-.heart {
-  height: 18px;
-  width: 22px;
-  align-self: center;
-  margin-left: 13px;
-  cursor: pointer;
-  color: rgba(0, 0, 0, 0.75);
-
-}
 .likes {
-  align-self: center;
-  margin-left: 5px;
   font-size: 12px;
+  align-items: center;
+  margin-top: 2px;
   line-height: 22px;
   color: rgba(0, 0, 0, 0.75);
+}
+.favor {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+  
+}
+.noFavorite {
+  cursor: pointer;
+  margin-right: 5px;
+  margin-top: -8px;
+  width: 18px;
+  height: 18px;
+  background: url("../../img/Vector.png") no-repeat;
+}
+
+.favorite {
+  cursor: pointer;
+  margin-right: 5px;
+  margin-top: -8px;
+  width: 18px;
+  height: 18px;
+  background: url("../../img/redHeart.png") no-repeat;
 }
 .title {
   font-style: normal;

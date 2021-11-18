@@ -18,11 +18,10 @@ import classes from "./Article.module.scss";
 export default function Article() {
   const state = useSelector((store) => store);
   const { article, isLoaded, isLoggedIn } = state;
-  const [foraward, setForaward] = useState(false);
+  const [forward, setForaward] = useState(false);
 
   const dispatch = useDispatch();
   const params = useParams();
-  const history = useHistory();
   const { slug } = params;
 
   const newApi = new ApiService();
@@ -40,22 +39,20 @@ export default function Article() {
   const confirm = () => {
     message.info("Article deleted!");
     setForaward(true);
-    setTimeout(() => {
-      history.go(0)
-    }, 2000)
   };
 
   const deleteArticle = () => {
     const userInfo = localStorage.getItem("user");
     const token = JSON.parse(userInfo);
+
+    newApi.deleteArticle(slug, token.token);
     confirm();
-    newApi.deleteArticle(slug, token.token).then((res) => console.log(res));
   };
 
   return (
     <div className={classes.body}>
       <div className={classes.wrapper}>
-        {foraward && <Redirect to="/articles" />}
+        {forward && <Redirect to="/articles" />}
         {isLoaded ? (
           <Post {...article} />
         ) : (

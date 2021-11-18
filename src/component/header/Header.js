@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
 import classNames from "classnames";
@@ -43,12 +43,12 @@ export default function Header() {
               Create article
             </button>
           </NavLink>
-          <NavLink to="/editProfile">
+          <NavLink to="/profile">
             <h6 className={classes.name}>
-              {userHeaderInfo ? userHeaderInfo.username : "John Snow"}
+              {userHeaderInfo ? userHeaderInfo.username : " "}
             </h6>
           </NavLink>
-          <NavLink to="/editProfile">
+          <NavLink to="/profile">
             <img
               src={userHeaderInfo ? userHeaderInfo.image : rectangle}
               alt="foto"
@@ -67,7 +67,7 @@ export default function Header() {
         </div>
       ) : (
         <div className={classes.enter}>
-          <NavLink to="/signIn/">
+          <NavLink to="/sign-in">
             <button
               type="button"
               className={classNames(classes.signIn, classes.enterButton)}
@@ -75,7 +75,7 @@ export default function Header() {
               Sign In
             </button>
           </NavLink>
-          <NavLink to="/newAccount/">
+          <NavLink to="/sign-up">
             <button
               type="button"
               className={classNames(classes.signUp, classes.enterButton)}
