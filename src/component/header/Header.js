@@ -2,7 +2,11 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
 import classNames from "classnames";
-import { loggedIn, toggleArticleComponent } from "../../redux/actions/actions";
+import {
+  loggedIn,
+  toggleArticleComponent,
+  setNullArticle,
+} from "../../redux/actions/actions";
 import rectangle from "../../img/rectangle.svg";
 
 import classes from "./Header.module.scss";
@@ -27,9 +31,13 @@ export default function Header() {
     dispatch(toggleArticleComponent(false));
   };
 
+  const OnClickArticle = () => {
+    dispatch(setNullArticle([]));
+  };
+
   return (
     <div className={classes.wrapper}>
-      <NavLink to="/">
+      <NavLink to="/" onClick={OnClickArticle}>
         <h6 className={classes.blogName}>Realworld Blog</h6>
       </NavLink>
       {isLoggedIn ? (

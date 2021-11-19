@@ -3,9 +3,9 @@ import { setLike, setDisLike } from "../redux/actions/actions";
 export default class ApiService {
   _domain = "https://api.realworld.io/api/";
 
-  async getResourse(url, page = 0) {
+  async getResourse(url, page = 1) {
     const result = await fetch(
-      `${this._domain}${url}?limit=5&offset=${page * 5}`
+      `${this._domain}${url}?limit=5&offset=${(page - 1) * 5}`
     );
 
     if (!result.ok) {
@@ -15,10 +15,10 @@ export default class ApiService {
     return await result.json();
   }
 
-  async getPostsData(token, page) {
+  async getPostsData(token, page = 0) {
     let result = [];
     if (token) {
-      result = await fetch(`${this._domain}${"articles"}?limit=5&offset=${0}`, {
+      result = await fetch(`${this._domain}${"articles"}?limit=5&offset=${page}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json; charset = utf-8",
@@ -30,9 +30,7 @@ export default class ApiService {
         throw new Error(`Возникла ошибка ${result.status}`);
       }
     } else {
-      result = await fetch(
-        `${this._domain}${"articles"}?limit=5&offset=${page}`
-      );
+      result = await fetch(`${this._domain}${"articles"}?limit=5&offset=${0}`);
 
       if (!result.ok) {
         throw new Error(`Возникла ошибка ${result.status}`);

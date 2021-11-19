@@ -17,8 +17,10 @@ import classes from "./Article.module.scss";
 
 export default function Article() {
   const state = useSelector((store) => store);
-  const { article, isLoaded, isLoggedIn } = state;
+  const { article, isLoggedIn } = state;
   const [forward, setForaward] = useState(false);
+  const [art, setArt] = useState([]);
+  const [load, setLoad] = useState(false);
 
   const dispatch = useDispatch();
   const params = useParams();
@@ -29,8 +31,14 @@ export default function Article() {
   const text = "Are you sure to delete this article?";
 
   useEffect(() => {
-    dispatch(getWholeArticle(slug));
-  }, [slug, dispatch]);
+    newApi.getArticle(slug).then((res) => {
+      setArt(res.article);
+      setLoad(true);
+    });
+    // dispatch(getWholeArticle(slug)).then((res) => {
+    //   console.log(res);
+    // });
+  }, []);
 
   const switchEdit = () => {
     dispatch(toggleArticleComponent(true));
@@ -53,8 +61,8 @@ export default function Article() {
     <div className={classes.body}>
       <div className={classes.wrapper}>
         {forward && <Redirect to="/articles" />}
-        {isLoaded ? (
-          <Post {...article} />
+        {load ? (
+          <Post {...art} />
         ) : (
           <Spinner
             animation="border"

@@ -1,12 +1,14 @@
 export const SET_POSTS_DATA = "SET_POSTS_DATA";
 export const GET_NEXT_PAGE = "GET_NEXT_PAGE";
 export const SET_ARTICLE = "GET_ARTICLE";
+export const SET_NULL_ARTICLE = "SET_NULL_ARTICLE";
 export const LOGGED_IN = "LOGGED_IN";
 export const PROFILE_UPDATED = "PROFILE_UPDATED";
 export const TOGGLE_ARTICLE = "TOGGLE_ARTICLE";
 export const TOTAL_COUNT = "TOTAL_COUNT";
 export const LIKE = "LIKE";
 export const DIS_LIKE = "DIS_LIKE";
+export const SET_PAGE = "SET_PAGE";
 
 export const setPostsData = (posts) => ({
   type: SET_POSTS_DATA,
@@ -20,6 +22,10 @@ export const getNextPage = (num) => ({
 
 export const setArticle = (num) => ({
   type: SET_ARTICLE,
+  payload: num,
+});
+export const setNullArticle = (num) => ({
+  type: SET_NULL_ARTICLE,
   payload: num,
 });
 
@@ -50,5 +56,10 @@ export const setLike = (num) => ({
 
 export const setDisLike = (num) => ({
   type: DIS_LIKE,
+  payload: num,
+});
+
+export const setPage = (num) => ({
+  type: SET_PAGE,
   payload: num,
 });

@@ -2,12 +2,14 @@ import { initialState } from "../initialState";
 import {
   SET_POSTS_DATA,
   SET_ARTICLE,
+  SET_NULL_ARTICLE,
   LOGGED_IN,
   PROFILE_UPDATED,
   TOGGLE_ARTICLE,
   TOTAL_COUNT,
   LIKE,
   DIS_LIKE,
+  SET_PAGE,
 } from "../actions/actions";
 
 function reducer(state = initialState, action) {
@@ -20,7 +22,7 @@ function reducer(state = initialState, action) {
     case TOTAL_COUNT:
       return {
         ...state,
-        totalCount: action.payload,
+        totalCount: Math.ceil(action.payload / 5),
       };
 
     case SET_ARTICLE:
@@ -34,6 +36,11 @@ function reducer(state = initialState, action) {
         ...state,
         isLoggedIn: action.payload,
       };
+    case SET_NULL_ARTICLE:
+      return {
+        ...state,
+        article: action.payload,
+      };
     case PROFILE_UPDATED:
       return {
         ...state,
@@ -43,6 +50,11 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         toggleArticle: action.payload,
+      };
+    case SET_PAGE:
+      return {
+        ...state,
+        currentPage: action.page,
       };
     case LIKE:
       return {
@@ -60,7 +72,7 @@ function reducer(state = initialState, action) {
         ...state,
         dataPosts: state.dataPosts.map((post) => {
           if (post.slug === action.slug) {
-            return action
+            return action;
           }
           return post;
         }),

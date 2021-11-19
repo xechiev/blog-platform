@@ -34,9 +34,9 @@ export default function Post({
     <div className={classes.wrapper}>
       <div className={classes.body}>
         <div className={classes.titleLike}>
-          <Link to={`/articles/${slug}`}>
-            <h5 className={classes.title}>{title}</h5>
-          </Link>
+          {/* <Link to={`/articles/${slug}`}> */}
+          <h5 className={classes.title}>{title}</h5>
+          {/* </Link> */}
           <div className={classes.favor}>
             <button
               type="button"
