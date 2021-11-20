@@ -60,7 +60,11 @@ const PostList = () => {
               ))
             ) : (
               <Alert variant="primary" className={classes.alert}>
-                <p>To view articles - click on create article</p>
+                <p>
+                  To view articles - click on
+                  {" "}
+                  <Link to="/new-article">create article</Link>
+                </p>
               </Alert>
             )}
           </ul>

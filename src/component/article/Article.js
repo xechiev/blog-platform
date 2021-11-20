@@ -40,7 +40,6 @@ export default function Article() {
 
   const confirm = () => {
     message.info("Article deleted!");
-    setForaward(true);
   };
 
   const deleteArticle = () => {
@@ -49,6 +48,7 @@ export default function Article() {
 
     newApi.deleteArticle(slug, token.token);
     confirm();
+    setForaward(true);
   };
 
   return (

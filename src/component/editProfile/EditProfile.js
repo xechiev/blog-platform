@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Redirect } from "react-router-dom";
 import { Alert } from "react-bootstrap";
+import { loggedIn } from "../../redux/actions/actions";
 import ApiService from "../../apiService/ApiService";
 
 import classes from "./EditProfile.module.scss";
@@ -23,8 +25,15 @@ export default function EditProfile() {
   } = useForm({
     resolver: yupResolver(SignupSchema),
   });
+  const dispatch = useDispatch();
   const [profileUpdated, setProfileUpdated] = useState(false);
   const [redirect, setRedirect] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem("user")) {
+      dispatch(loggedIn(true));
+    }
+  }, []);
 
   const newApi = new ApiService();
 
