@@ -24,6 +24,7 @@ export const setArticle = (num) => ({
   type: SET_ARTICLE,
   payload: num,
 });
+
 export const setNullArticle = (num) => ({
   type: SET_NULL_ARTICLE,
   payload: num,

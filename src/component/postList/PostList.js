@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { Alert } from "react-bootstrap";
 import { Pagination } from "antd";
 import Post from "../post/Post";
-import Pagin from "../pagin/Pagin";
 import { getPostsData } from "../../redux/asyncActions/asyncActions";
 import { loggedIn, setPage } from "../../redux/actions/actions";
 import classes from "./PostList.module.scss";
@@ -51,13 +50,19 @@ const PostList = () => {
       ) : (
         <>
           <ul className={classes.postList}>
-            {dataPosts.map((post) => (
-              <li className={classes.post} key={Math.random()}>
-                <Link to={`/articles/${post.slug}`}>
-                  <Post {...post} />
-                </Link>
-              </li>
-            ))}
+            {dataPosts.length ? (
+              dataPosts.map((post) => (
+                <li className={classes.post} key={Math.random()}>
+                  <Link to={`/articles/${post.slug}`}>
+                    <Post {...post} />
+                  </Link>
+                </li>
+              ))
+            ) : (
+              <Alert variant="primary" className={classes.alert}>
+                <p>To view articles - click on create article</p>
+              </Alert>
+            )}
           </ul>
           <div className={classes.footer}>
             {dataPosts.length > 5 ? (

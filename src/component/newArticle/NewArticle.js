@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { useParams, useHistory } from "react-router";
 import { useForm, useFieldArray } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -7,6 +7,7 @@ import * as yup from "yup";
 import classNames from "classnames";
 import { Alert } from "react-bootstrap";
 import ApiService from "../../apiService/ApiService";
+import { loggedIn } from "../../redux/actions/actions";
 import Button from "../button/Button";
 
 import classes from "./NewArticle.module.scss";
@@ -20,6 +21,7 @@ const SignupSchema = yup.object().shape({
 
 export default function NewArticle() {
   const state = useSelector((store) => store);
+  const dispatch = useDispatch();
   const { article, isLoggedIn, toggleArticle } = state;
   const {
     register,
@@ -45,6 +47,12 @@ export default function NewArticle() {
   const { slug } = params;
 
   const newApi = new ApiService();
+
+  useEffect(() => {
+    if (localStorage.getItem("user")) {
+      dispatch(loggedIn(true));
+    }
+  }, []);
 
   const onSubmit = (data) => {
     const userInfo = localStorage.getItem("user");

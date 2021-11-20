@@ -6,7 +6,7 @@ import { Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { Popconfirm, message } from "antd";
 import { getWholeArticle } from "../../redux/asyncActions/asyncActions";
-import { toggleArticleComponent } from "../../redux/actions/actions";
+import { toggleArticleComponent, loggedIn } from "../../redux/actions/actions";
 import Post from "../post/Post";
 
 import ApiService from "../../apiService/ApiService";
@@ -17,10 +17,10 @@ import classes from "./Article.module.scss";
 
 export default function Article() {
   const state = useSelector((store) => store);
-  const { article, isLoggedIn } = state;
+  const { article, isLoggedIn, isLoaded } = state;
   const [forward, setForaward] = useState(false);
-  const [art, setArt] = useState([]);
-  const [load, setLoad] = useState(false);
+  // const [art, setArt] = useState([]);
+  // const [load, setLoad] = useState(false);
 
   const dispatch = useDispatch();
   const params = useParams();
@@ -31,14 +31,8 @@ export default function Article() {
   const text = "Are you sure to delete this article?";
 
   useEffect(() => {
-    newApi.getArticle(slug).then((res) => {
-      setArt(res.article);
-      setLoad(true);
-    });
-    // dispatch(getWholeArticle(slug)).then((res) => {
-    //   console.log(res);
-    // });
-  }, []);
+    dispatch(getWholeArticle(slug));
+  }, [dispatch, slug]);
 
   const switchEdit = () => {
     dispatch(toggleArticleComponent(true));
@@ -61,8 +55,8 @@ export default function Article() {
     <div className={classes.body}>
       <div className={classes.wrapper}>
         {forward && <Redirect to="/articles" />}
-        {load ? (
-          <Post {...art} />
+        {isLoaded ? (
+          <Post {...article} />
         ) : (
           <Spinner
             animation="border"

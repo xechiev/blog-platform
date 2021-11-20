@@ -40,6 +40,7 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         article: action.payload,
+        isLoaded: false,
       };
     case PROFILE_UPDATED:
       return {
