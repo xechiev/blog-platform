@@ -1,5 +1,5 @@
 import ApiService from "../../apiService/ApiService";
-import { setPostsData, setArticle, setTotalArticles, setLike, setDisLike, loggedIn } from "../actions/actions";
+import { setPostsData, setArticle, setTotalArticles, loggedIn } from "../actions/actions";
 
 const newApiService = new ApiService();
 
@@ -19,12 +19,12 @@ export const getWholeArticle = (value) => (dispatch) => {
 
 export const addLike = (slug, token) => (dispatch) => {
   newApiService.favoriteArticle(slug, token).then((res) => {
-    dispatch(setLike(res.article))
+    dispatch(setArticle(res.article))
   })
 }
 
 export const deleteLike = (slug, token) => (dispatch) => {
-  newApiService.favoriteArticle(slug, token).then((res) => {
-    dispatch(setDisLike(res.article))
+  newApiService.unFavoriteArticle(slug, token).then((res) => {
+    dispatch(setArticle(res.article))
   })
 }

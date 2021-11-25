@@ -7,8 +7,6 @@ import {
   PROFILE_UPDATED,
   TOGGLE_ARTICLE,
   TOTAL_COUNT,
-  LIKE,
-  DIS_LIKE,
   SET_PAGE,
 } from "../actions/actions";
 
@@ -56,28 +54,6 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         currentPage: action.page,
-      };
-    case LIKE:
-      return {
-        ...state,
-        dataPosts: state.dataPosts.map((post) => {
-          if (post.slug === action.slug) {
-            return action;
-          }
-          return post;
-        }),
-        // article: action,
-      };
-    case DIS_LIKE:
-      return {
-        ...state,
-        dataPosts: state.dataPosts.map((post) => {
-          if (post.slug === action.slug) {
-            return action;
-          }
-          return post;
-        }),
-        // article: action,
       };
     default:
       return state;

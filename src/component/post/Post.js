@@ -6,7 +6,6 @@ import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import format from "date-fns/format";
 import { addLike, deleteLike } from "../../redux/asyncActions/asyncActions";
-import ApiService from "../../apiService/ApiService";
 
 import classes from "./Post.module.scss";
 

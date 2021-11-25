@@ -4,9 +4,9 @@ export default function Button(value, color, height, func) {
   const buttonStyle = {
     boxSizing: "border-box",
     height: `${height}px`,
-    padding: "3px 17px 5px 17px",
+    padding: "0px 17px",
     border: `1px solid #${color}`,
-    borderRadius: "5px",
+    borderRadius: "4px",
     alignItems: "center",
     marginRight: "14px",
     color: `#${color}`,

@@ -24,6 +24,7 @@
       "react"
   ],
   "rules": {
+    "linebreak-style": 0,
     "react/prop-types": 0,
     "import/prefer-default-export": "off",
     "comma-dangle": 0,
@@ -44,7 +45,6 @@
   //   "quote-props": ["error", "consistent"],
     "spaced-comment": ["error", "always"],
     "semi": "off",
-  //   "linebreak-style": 0,
     "no-param-reassign": "off",
     "no-trailing-spaces": "off",
     "no-tabs": "off",
