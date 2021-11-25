@@ -1,6 +1,10 @@
 export default class ApiService {
   _domain = "https://api.realworld.io/api/";
 
+  _userInfo = localStorage.getItem("user");
+
+  _info = JSON.parse(this._userInfo);
+
   async getResourse(url, page = 1) {
     const result = await fetch(
       `${this._domain}${url}?limit=5&offset=${(page - 1) * 5}`
@@ -115,17 +119,21 @@ export default class ApiService {
     return request;
   }
 
-  async deleteArticle(slug, token) {
-    const result = await fetch(`${this._domain}${"articles/"}${slug}`, {
+  async deleteArticle(slug) {
+    let result = await fetch(`${this._domain}${"articles/"}${slug}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Token ${token}`,
+        Authorization: `Token ${this._info.token}`,
       },
     });
 
-    const request = result.json();
-    return request;
+    if (result.status === 204) {
+      result = "ok";
+      return result;
+    }
+
+    return result.json();
   }
 
   async favoriteArticle(slug, token) {

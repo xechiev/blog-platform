@@ -15,8 +15,6 @@ const PostList = () => {
   const [curPage, setCurPage] = useState(1);
   const [alert, setAlert] = useState(false);
 
-  console.log(dataPosts);
-
   useEffect(() => {
     dispatch(setLoading(false));
     if (localStorage.getItem("user")) {

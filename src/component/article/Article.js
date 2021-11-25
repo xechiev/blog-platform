@@ -23,8 +23,8 @@ import classes from "./Article.module.scss";
 export default function Article() {
   const state = useSelector((store) => store);
   const { article, isLoggedIn, isLoaded } = state;
+  const [forward, setForward] = useState(false);
 
-  const history = useHistory();
   const dispatch = useDispatch();
   const params = useParams();
   const { slug } = params;
@@ -37,9 +37,6 @@ export default function Article() {
     dispatch(getWholeArticle(slug));
   }, [dispatch, slug]);
 
-  const userInfo = localStorage.getItem("user");
-  const info = JSON.parse(userInfo);
-
   const switchEdit = () => {
     dispatch(toggleArticleComponent(true));
   };
@@ -49,13 +46,14 @@ export default function Article() {
   };
 
   const deleteArticle = () => {
-    newApi.deleteArticle(slug, info.token);
-    confirm();
-    dispatch(setNullArticle([]));
-    dispatch(setPostsData([]));
-    history.push("/articles");
+    newApi.deleteArticle(slug).then((res) => {
+      if (res === "ok") {
+        confirm();
+        dispatch(setPostsData([]));
+        setForward(true);
+      }
+    });
   };
-
   // if (article.author.username !== info.username) {
   //   dispatch(loggedIn(false));
   // }
@@ -88,6 +86,7 @@ export default function Article() {
             <Link to={`/articles/${slug}/edit`}>
               {Button("Edit", "52C41A", 31, switchEdit)}
             </Link>
+            {forward && <Redirect to="/articles" />}
           </div>
         )}
       </div>
