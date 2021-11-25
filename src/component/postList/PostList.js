@@ -1,21 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { Alert } from "react-bootstrap";
+import { Alert, Spinner } from "react-bootstrap";
 import { Pagination } from "antd";
 import Post from "../post/Post";
 import { getPostsData } from "../../redux/asyncActions/asyncActions";
-import { loggedIn, setPage } from "../../redux/actions/actions";
+import { loggedIn, setPage, setLoading } from "../../redux/actions/actions";
 import classes from "./PostList.module.scss";
 
 const PostList = () => {
   const dispatch = useDispatch();
   const state = useSelector((store) => store);
-  const { dataPosts, totalCount, currentPage } = state;
+  const { dataPosts, totalCount, currentPage, isLoading } = state;
   const [curPage, setCurPage] = useState(1);
   const [alert, setAlert] = useState(false);
 
+  console.log(dataPosts);
+
   useEffect(() => {
+    dispatch(setLoading(false));
     if (localStorage.getItem("user")) {
       const userInfo = localStorage.getItem("user");
       const info = JSON.parse(userInfo);
@@ -26,7 +29,7 @@ const PostList = () => {
       setAlert(true);
       dispatch(getPostsData());
     }
-  }, [dataPosts.length, currentPage]);
+  }, [currentPage]);
 
   const nextPage = (p) => {
     dispatch(setPage(p));
@@ -34,7 +37,7 @@ const PostList = () => {
   };
   return (
     <div className={classes.wrapper}>
-      {alert ? (
+      {/* {alert ? 
         <Alert variant="primary" className={classes.alert}>
           <Alert.Heading>Hey, nice to see you!</Alert.Heading>
           <p>
@@ -47,26 +50,18 @@ const PostList = () => {
             eiusmod tempor incididunt ut labore et dolore magna aliqua.
           </p>
         </Alert>
-      ) : (
+       : ()
+      } */}
+      {isLoading ? (
         <>
           <ul className={classes.postList}>
-            {dataPosts.length ? (
-              dataPosts.map((post) => (
-                <li className={classes.post} key={Math.random()}>
-                  <Link to={`/articles/${post.slug}`}>
-                    <Post {...post} />
-                  </Link>
-                </li>
-              ))
-            ) : (
-              <Alert variant="primary" className={classes.alert}>
-                <p>
-                  To view articles - click on
-                  {" "}
-                  <Link to="/new-article">create article</Link>
-                </p>
-              </Alert>
-            )}
+            {dataPosts.map((post) => (
+              <li className={classes.post} key={Math.random()}>
+                <Link to={`/articles/${post.slug}`}>
+                  <Post {...post} />
+                </Link>
+              </li>
+            ))}
           </ul>
           <div className={classes.footer}>
             {dataPosts.length > 5 ? (
@@ -81,6 +76,12 @@ const PostList = () => {
             )}
           </div>
         </>
+      ) : (
+        <Spinner
+          animation="border"
+          variant="primary"
+          className={classes.spin}
+        />
       )}
     </div>
   );

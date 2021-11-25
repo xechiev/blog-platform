@@ -6,7 +6,12 @@ import { Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { Popconfirm, message } from "antd";
 import { getWholeArticle } from "../../redux/asyncActions/asyncActions";
-import { toggleArticleComponent, loggedIn } from "../../redux/actions/actions";
+import {
+  toggleArticleComponent,
+  setLoading,
+  setNullArticle,
+  setPostsData,
+} from "../../redux/actions/actions";
 import Post from "../post/Post";
 
 import ApiService from "../../apiService/ApiService";
@@ -18,10 +23,8 @@ import classes from "./Article.module.scss";
 export default function Article() {
   const state = useSelector((store) => store);
   const { article, isLoggedIn, isLoaded } = state;
-  const [forward, setForaward] = useState(false);
-  // const [art, setArt] = useState([]);
-  // const [load, setLoad] = useState(false);
 
+  const history = useHistory();
   const dispatch = useDispatch();
   const params = useParams();
   const { slug } = params;
@@ -34,6 +37,9 @@ export default function Article() {
     dispatch(getWholeArticle(slug));
   }, [dispatch, slug]);
 
+  const userInfo = localStorage.getItem("user");
+  const info = JSON.parse(userInfo);
+
   const switchEdit = () => {
     dispatch(toggleArticleComponent(true));
   };
@@ -43,18 +49,19 @@ export default function Article() {
   };
 
   const deleteArticle = () => {
-    const userInfo = localStorage.getItem("user");
-    const token = JSON.parse(userInfo);
-
-    newApi.deleteArticle(slug, token.token);
+    newApi.deleteArticle(slug, info.token);
     confirm();
-    setForaward(true);
+    dispatch(setNullArticle([]));
+    dispatch(setPostsData([]));
+    history.push("/articles");
   };
 
+  // if (article.author.username !== info.username) {
+  //   dispatch(loggedIn(false));
+  // }
   return (
     <div className={classes.body}>
       <div className={classes.wrapper}>
-        {forward && <Redirect to="/articles" />}
         {isLoaded ? (
           <Post {...article} />
         ) : (

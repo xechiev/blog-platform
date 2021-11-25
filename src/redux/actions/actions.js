@@ -7,6 +7,7 @@ export const PROFILE_UPDATED = "PROFILE_UPDATED";
 export const TOGGLE_ARTICLE = "TOGGLE_ARTICLE";
 export const TOTAL_COUNT = "TOTAL_COUNT";
 export const SET_PAGE = "SET_PAGE";
+export const SET_LOADING = "SET_LOADING";
 
 export const setPostsData = (posts) => ({
   type: SET_POSTS_DATA,
@@ -50,5 +51,10 @@ export const setTotalArticles = (num) => ({
 
 export const setPage = (num) => ({
   type: SET_PAGE,
+  payload: num,
+});
+
+export const setLoading = (num) => ({
+  type: SET_LOADING,
   payload: num,
 });

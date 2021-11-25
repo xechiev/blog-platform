@@ -8,6 +8,7 @@ import {
   TOGGLE_ARTICLE,
   TOTAL_COUNT,
   SET_PAGE,
+  SET_LOADING,
 } from "../actions/actions";
 
 function reducer(state = initialState, action) {
@@ -22,7 +23,11 @@ function reducer(state = initialState, action) {
         ...state,
         totalCount: Math.ceil(action.payload / 5),
       };
-
+    case SET_LOADING:
+      return {
+        ...state,
+        isLoading: action.payload,
+      };
     case SET_ARTICLE:
       return {
         ...state,

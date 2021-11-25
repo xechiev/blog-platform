@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -25,9 +25,12 @@ export default function EditProfile() {
   } = useForm({
     resolver: yupResolver(SignupSchema),
   });
+  const state = useSelector((store) => store);
+  const { isLoggedIn } = state;
   const dispatch = useDispatch();
   const [profileUpdated, setProfileUpdated] = useState(false);
   const [redirect, setRedirect] = useState(false);
+  let info = [];
 
   useEffect(() => {
     if (localStorage.getItem("user")) {
@@ -37,12 +40,16 @@ export default function EditProfile() {
 
   const newApi = new ApiService();
 
-  const userInfo = localStorage.getItem("user");
-  const info = JSON.parse(userInfo);
-  const { email, username, image, token } = info;
+  if (localStorage.getItem("user")) {
+    const userInfo = localStorage.getItem("user");
+    info = JSON.parse(userInfo);
+  }
+  // const userInfo = localStorage.getItem("user");
+  // const info = JSON.parse(userInfo);
+  // const { email, username, image, token } = info;
 
   const onSubmit = (data) => {
-    newApi.updatedUser(data, token).then((res) => {
+    newApi.updatedUser(data, info.token).then((res) => {
       localStorage.setItem("user", JSON.stringify(res.user));
       setProfileUpdated(true);
       setTimeout(() => {
@@ -51,8 +58,8 @@ export default function EditProfile() {
       }, 1500);
     });
   };
-
-  return (
+  console.log(isLoggedIn);
+  return isLoggedIn ? (
     <div className={classes.body}>
       {profileUpdated ? (
         <>
@@ -69,7 +76,7 @@ export default function EditProfile() {
             <input
               {...register("username")}
               className={classes.form}
-              defaultValue={username}
+              defaultValue={info.username}
               placeholder="John Doe"
             />
             {errors.username && (
@@ -80,7 +87,7 @@ export default function EditProfile() {
               {...register("email")}
               className={classes.form}
               type="email"
-              defaultValue={email}
+              defaultValue={info.email}
               placeholder="john@example.com"
             />
             {errors.email && (
@@ -91,7 +98,7 @@ export default function EditProfile() {
               {...register("image")}
               className={classes.form}
               placeholder="Avatar image"
-              defaultValue={image}
+              defaultValue={info.image}
               type="text"
             />
             {errors.image && (
@@ -104,5 +111,7 @@ export default function EditProfile() {
         </div>
       )}
     </div>
+  ) : (
+    <Redirect to="/" />
   );
 }

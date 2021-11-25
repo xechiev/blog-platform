@@ -5,6 +5,7 @@ export const initialState = {
   currentPage: 1,
   totalCount: 0,
   isLoaded: false,
+  isLoading: false,
   profileUpdated: false,
   toggleArticle: false,
 };

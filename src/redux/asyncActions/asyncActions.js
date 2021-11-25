@@ -1,5 +1,5 @@
 import ApiService from "../../apiService/ApiService";
-import { setPostsData, setArticle, setTotalArticles, loggedIn } from "../actions/actions";
+import { setPostsData, setArticle, setTotalArticles, loggedIn, setLoading } from "../actions/actions";
 
 const newApiService = new ApiService();
 
@@ -7,6 +7,7 @@ export const getPostsData = (token = 0, page = 1) => (dispatch) => {
   newApiService.getPostsData(token, page).then((res) => {
     dispatch(setPostsData(res.articles));
     dispatch(setTotalArticles(res.articlesCount));
+    dispatch(setLoading(true));
   });
 };
 

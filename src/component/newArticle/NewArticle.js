@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useParams, useHistory } from "react-router";
 import { useForm, useFieldArray } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { Redirect } from "react-router-dom";
 import * as yup from "yup";
 import classNames from "classnames";
 import { Alert } from "react-bootstrap";
@@ -80,97 +81,98 @@ export default function NewArticle() {
       newApi.createArticle(data, token).then((res) => {
         setErrorTitle(false);
         setArticleSend(false);
-        history.push(`/articles/${res.article.slug}`);
 
         if (res === "error") {
           setErrorTitle(true);
+        } else {
+          history.push(`/articles/${res.article.slug}`);
         }
       });
     }
   };
 
-  return (
-    isLoggedIn && (
-      <div className={classes.body}>
-        <div className={classes.wrapper}>
-          {articleSend ? (
-            <>
-              <Alert variant="primary" className={classes.alert}>
-                {toggleArticle ? "Article edited!" : "Article created!"}
-              </Alert>
-            </>
-          ) : (
-            <>
-              <h5 className={classes.name}>
-                {toggleArticle ? "Edit article" : "Create new article"}
-              </h5>
-              <form onSubmit={handleSubmit(onSubmit)}>
-                <h6 className={classes.title}>Title</h6>
-                <input
-                  {...register("title")}
-                  className={classes.form}
-                  placeholder="Title"
-                  defaultValue={toggleArticle ? article.title : ""}
-                />
-                {errorTitle && (
-                  <Alert variant="danger" className={classes.alert}>
-                    Title must be unique!
-                  </Alert>
-                )}
-                {errors.title && (
-                  <p className={classes.errors}>{errors.title.message}</p>
-                )}
-                <h6 className={classes.title}>Short description</h6>
-                <input
-                  {...register("description")}
-                  className={classes.form}
-                  defaultValue={toggleArticle ? article.description : ""}
-                  placeholder="Title"
-                />
-                {errors.description && (
-                  <p className={classes.errors}>{errors.description.message}</p>
-                )}
-                <h6 className={classes.title}>Text</h6>
-                <textarea
-                  {...register("body")}
-                  className={classNames(classes.form, classes.textarea)}
-                  defaultValue={toggleArticle ? article.body : ""}
-                  placeholder="Text"
-                />
-                {errors.body && (
-                  <p className={classes.errors}>{errors.body.message}</p>
-                )}
-                <h6 className={classes.title}>Tags</h6>
-                <div className={classes.tagsBody}>
-                  <div className={classes.tagGroup}>
-                    {fields.map((field, index) => (
-                      <li key={field.id}>
-                        <input
-                          {...register(`tagList[${index}].val`)}
-                          className={classes.tags}
-                          placeholder="Tag"
-                          defaultValue={
-                            toggleArticle ? article.tagList[index] : ""
-                          }
-                        />
-                        {Button("Delete", "F5222D", 40, () => remove(index))}
-                      </li>
-                    ))}
-                  </div>
-                  <div>
-                    {Button("Add tag", "1890FF", 40, () => {
-                      append({});
-                    })}
-                  </div>
+  return isLoggedIn ? (
+    <div className={classes.body}>
+      <div className={classes.wrapper}>
+        {articleSend ? (
+          <>
+            <Alert variant="primary" className={classes.alert}>
+              {toggleArticle ? "Article edited!" : "Article created!"}
+            </Alert>
+          </>
+        ) : (
+          <>
+            <h5 className={classes.name}>
+              {toggleArticle ? "Edit article" : "Create new article"}
+            </h5>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <h6 className={classes.title}>Title</h6>
+              <input
+                {...register("title")}
+                className={classes.form}
+                placeholder="Title"
+                defaultValue={toggleArticle ? article.title : ""}
+              />
+              {errorTitle && (
+                <Alert variant="danger" className={classes.alert}>
+                  Title must be unique!
+                </Alert>
+              )}
+              {errors.title && (
+                <p className={classes.errors}>{errors.title.message}</p>
+              )}
+              <h6 className={classes.title}>Short description</h6>
+              <input
+                {...register("description")}
+                className={classes.form}
+                defaultValue={toggleArticle ? article.description : ""}
+                placeholder="Title"
+              />
+              {errors.description && (
+                <p className={classes.errors}>{errors.description.message}</p>
+              )}
+              <h6 className={classes.title}>Text</h6>
+              <textarea
+                {...register("body")}
+                className={classNames(classes.form, classes.textarea)}
+                defaultValue={toggleArticle ? article.body : ""}
+                placeholder="Text"
+              />
+              {errors.body && (
+                <p className={classes.errors}>{errors.body.message}</p>
+              )}
+              <h6 className={classes.title}>Tags</h6>
+              <div className={classes.tagsBody}>
+                <div className={classes.tagGroup}>
+                  {fields.map((field, index) => (
+                    <li key={field.id}>
+                      <input
+                        {...register(`tagList[${index}].val`)}
+                        className={classes.tags}
+                        placeholder="Tag"
+                        defaultValue={
+                          toggleArticle ? article.tagList[index] : ""
+                        }
+                      />
+                      {Button("Delete", "F5222D", 40, () => remove(index))}
+                    </li>
+                  ))}
                 </div>
-                <button type="submit" className={classes.submit}>
-                  Send
-                </button>
-              </form>
-            </>
-          )}
-        </div>
+                <div>
+                  {Button("Add tag", "1890FF", 40, () => {
+                    append({});
+                  })}
+                </div>
+              </div>
+              <button type="submit" className={classes.submit}>
+                Send
+              </button>
+            </form>
+          </>
+        )}
       </div>
-    )
+    </div>
+  ) : (
+    <Redirect to="/" />
   );
 }
