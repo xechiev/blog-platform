@@ -25,7 +25,7 @@ const PostList = () => {
     } else {
       dispatch(getPostsData());
     }
-  }, [currentPage]);
+  }, [dispatch, curPage]);
 
   const nextPage = (p) => {
     dispatch(setPage(p));

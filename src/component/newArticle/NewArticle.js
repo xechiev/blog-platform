@@ -53,7 +53,7 @@ export default function NewArticle() {
     if (localStorage.getItem("user")) {
       dispatch(loggedIn(true));
     }
-  }, []);
+  }, [dispatch]);
 
   const onSubmit = (data) => {
     const userInfo = localStorage.getItem("user");

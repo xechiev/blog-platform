@@ -38,7 +38,7 @@ export default function EditProfile() {
     if (localStorage.getItem("user")) {
       dispatch(loggedIn(true));
     }
-  }, []);
+  }, [dispatch]);
 
   const newApi = new ApiService();
 

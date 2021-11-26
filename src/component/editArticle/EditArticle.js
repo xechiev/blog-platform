@@ -14,7 +14,8 @@ export default function EditArticle() {
   useEffect(() => {
     newApi.getArticle(slug);
     dispatch(toggleArticleComponent(true));
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, slug]);
 
   return (
     <>

@@ -1,11 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { Redirect } from "react-router";
 import { Result, Button } from "antd";
+import { loggedIn } from "../../redux/actions/actions";
 
 import "antd/dist/antd.css";
 
 export default function Page404() {
+  const dispatch = useDispatch();
   const [redirect, setRedirect] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem("user")) {
+      dispatch(loggedIn(true));
+    }
+  }, [dispatch]);
 
   const handleClick = () => {
     setRedirect(true);
