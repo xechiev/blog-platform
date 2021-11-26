@@ -1,9 +1,11 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import format from "date-fns/format";
+import { Alert } from "react-bootstrap";
 import { addLike, deleteLike } from "../../redux/asyncActions/asyncActions";
 
 import classes from "./Post.module.scss";
@@ -18,14 +20,15 @@ export default function Post({
   favorited,
   slug,
 }) {
+  const [alert, setAlert] = useState(false);
   const dispatch = useDispatch();
 
   const handleClick = () => {
-    const userInfo = localStorage.getItem("user");
-    const info = JSON.parse(userInfo);
-    const { token } = info;
-
-    return favorited ? dispatch(deleteLike(slug, token)) : dispatch(addLike(slug, token));
+    if (localStorage.getItem("user")) {
+      return favorited ? dispatch(deleteLike(slug)) : dispatch(addLike(slug));
+    }
+    setAlert(true);
+    return console.log("Для того, чтобы поставить like - авторизуйтесь!");
   };
 
   return (
@@ -48,6 +51,14 @@ export default function Post({
           </div>
         ))}
         <p className={classes.description}>{description}</p>
+        {alert && (
+          <>
+            <Alert variant="warning">
+              In order to put like - 
+              <Link to="/sign-in"> sign in!</Link>
+            </Alert>
+          </>
+        )}
       </div>
       <div className={classes.info}>
         <div className={classes.nameData}>

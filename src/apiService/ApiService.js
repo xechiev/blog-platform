@@ -141,12 +141,12 @@ export default class ApiService {
     return result.json();
   }
 
-  async favoriteArticle(slug, token) {
+  async favoriteArticle(slug) {
     const result = await fetch(`${this._domain}articles/${slug}/favorite`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Token ${token}`,
+        Authorization: `Token ${this._info.token}`,
       },
     });
     const request = await result.json();
@@ -154,12 +154,12 @@ export default class ApiService {
     return request;
   }
 
-  async unFavoriteArticle(slug, token) {
+  async unFavoriteArticle(slug) {
     const result = await fetch(`${this._domain}articles/${slug}/favorite`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Token ${token}`,
+        Authorization: `Token ${this._info.token}`,
       },
     });
     const request = await result.json();

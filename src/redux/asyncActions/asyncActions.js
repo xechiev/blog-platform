@@ -18,14 +18,14 @@ export const getPostsData = (token = 0, page = 1) => (dispatch) => {
 //   });
 // };
 
-export const addLike = (slug, token) => (dispatch) => {
-  newApiService.favoriteArticle(slug, token).then((res) => {
+export const addLike = (slug) => (dispatch) => {
+  newApiService.favoriteArticle(slug).then((res) => {
     dispatch(setArticle(res.article))
   })
 }
 
-export const deleteLike = (slug, token) => (dispatch) => {
-  newApiService.unFavoriteArticle(slug, token).then((res) => {
+export const deleteLike = (slug) => (dispatch) => {
+  newApiService.unFavoriteArticle(slug).then((res) => {
     dispatch(setArticle(res.article))
   })
 }
