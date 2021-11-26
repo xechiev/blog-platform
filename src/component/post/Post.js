@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */
-import React, { useEffect, useState } from "react";
-import { Link, useParams, useHistory } from "react-router-dom";
+import React from "react";
 import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import format from "date-fns/format";

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { Alert, Spinner } from "react-bootstrap";
+import { Spinner } from "react-bootstrap";
 import { Pagination } from "antd";
 import Post from "../post/Post";
 import { getPostsData } from "../../redux/asyncActions/asyncActions";
@@ -13,7 +13,6 @@ const PostList = () => {
   const state = useSelector((store) => store);
   const { dataPosts, totalCount, currentPage, isLoading } = state;
   const [curPage, setCurPage] = useState(1);
-  const [alert, setAlert] = useState(false);
 
   useEffect(() => {
     dispatch(setLoading(false));
@@ -24,7 +23,6 @@ const PostList = () => {
       dispatch(getPostsData(token, curPage));
       dispatch(loggedIn(true));
     } else {
-      setAlert(true);
       dispatch(getPostsData());
     }
   }, [currentPage]);
@@ -35,21 +33,6 @@ const PostList = () => {
   };
   return (
     <div className={classes.wrapper}>
-      {/* {alert ? 
-        <Alert variant="primary" className={classes.alert}>
-          <Alert.Heading>Hey, nice to see you!</Alert.Heading>
-          <p>
-            In order to use the full functionality of the platform, please
-            register or log in.
-          </p>
-          <hr />
-          <p className="mb-0">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua.
-          </p>
-        </Alert>
-       : ()
-      } */}
       {isLoading ? (
         <>
           <ul className={classes.postList}>

@@ -75,7 +75,7 @@ export default class ApiService {
   }
 
   async updatedUser(data, token) {
-    const result = await fetch(`${this._domain}${"user"}`, {
+    let result = await fetch(`${this._domain}${"user"}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -83,8 +83,13 @@ export default class ApiService {
       },
       body: JSON.stringify({ user: data }),
     });
-    const request = result.json();
-    return request;
+
+    if (result.status === 500) {
+      result = "error";
+      return result;
+    }
+
+    return result.json();
   }
 
   async createArticle(data, token) {

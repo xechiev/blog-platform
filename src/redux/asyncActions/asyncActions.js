@@ -1,5 +1,5 @@
 import ApiService from "../../apiService/ApiService";
-import { setPostsData, setArticle, setTotalArticles, loggedIn, setLoading } from "../actions/actions";
+import { setPostsData, setArticle, setTotalArticles, setLoading } from "../actions/actions";
 
 const newApiService = new ApiService();
 
@@ -11,12 +11,12 @@ export const getPostsData = (token = 0, page = 1) => (dispatch) => {
   });
 };
 
-export const getWholeArticle = (value) => (dispatch) => {
-  newApiService.getArticle(value).then((res) => {
-    dispatch(setArticle(res.article));
-    dispatch(loggedIn(true));
-  });
-};
+// export const getWholeArticle = (value) => (dispatch) => {
+//   newApiService.getArticle(value).then((res) => {
+//     dispatch(setArticle(res.article));
+//     dispatch(loggedIn(true));
+//   });
+// };
 
 export const addLike = (slug, token) => (dispatch) => {
   newApiService.favoriteArticle(slug, token).then((res) => {
