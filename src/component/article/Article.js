@@ -37,11 +37,12 @@ export default function Article() {
 
     newApi.getArticle(slug).then((res) => {
       dispatch(setArticle(res.article));
-
-      if (res.article.author.username === info.username) {
-        setShowButton(true);
-      } else {
-        setShowButton(false);
+      if (localStorage.getItem("user")) {
+        if (res.article.author.username === info.username) {
+          setShowButton(true);
+        } else {
+          setShowButton(false);
+        }
       }
     });
   }, [dispatch, slug]);
@@ -64,7 +65,7 @@ export default function Article() {
     });
   };
 
-  return isLoggedIn ? (
+  return (
     <div className={classes.body}>
       <div className={classes.wrapper}>
         {isLoaded ? (
@@ -102,7 +103,5 @@ export default function Article() {
         )}
       </div>
     </div>
-  ) : (
-    <Redirect to="/" />
   );
 }
