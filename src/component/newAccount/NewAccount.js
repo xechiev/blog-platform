@@ -30,8 +30,8 @@ export default function NewAccount() {
     resolver: yupResolver(SignupSchema),
   });
   const dispatch = useDispatch();
-  const state = useSelector((store) => store);
-  const { isLoggedIn } = state;
+  const { isLoggedIn } = useSelector((store) => store);
+
   const [forward, setForward] = useState(false);
   const [errorSignIn, setErrorSignIn] = useState(false);
 

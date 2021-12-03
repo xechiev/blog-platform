@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Spinner } from "react-bootstrap";
 import { Pagination } from "antd";
@@ -10,21 +9,15 @@ import classes from "./PostList.module.scss";
 
 const PostList = () => {
   const dispatch = useDispatch();
-  const state = useSelector((store) => store);
-  const { dataPosts, totalCount, currentPage, isLoading } = state;
+  const { dataPosts, totalCount, currentPage, isLoading } = useSelector((store) => store);
   const [curPage, setCurPage] = useState(1);
 
   useEffect(() => {
-    dispatch(setLoading(false));
     if (localStorage.getItem("user")) {
-      const userInfo = localStorage.getItem("user");
-      const info = JSON.parse(userInfo);
-      const { token } = info;
-      dispatch(getPostsData(token, curPage));
       dispatch(loggedIn(true));
-    } else {
-      dispatch(getPostsData());
     }
+    dispatch(setLoading(false));
+    dispatch(getPostsData(curPage));
   }, [dispatch, curPage]);
 
   const nextPage = (p) => {
@@ -38,9 +31,7 @@ const PostList = () => {
           <ul className={classes.postList}>
             {dataPosts.map((post) => (
               <li className={classes.post} key={Math.random()}>
-                <Link to={`/articles/${post.slug}`}>
-                  <Post {...post} />
-                </Link>
+                <Post {...post} />
               </li>
             ))}
           </ul>
@@ -50,7 +41,7 @@ const PostList = () => {
                 page={currentPage}
                 pageSize={5}
                 total={totalCount}
-                onChange={(page) => nextPage()}
+                onChange={() => nextPage()}
               />
             ) : (
               " "

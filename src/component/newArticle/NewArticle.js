@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams, useHistory } from "react-router";
+import { useParams } from "react-router";
 import { useForm, useFieldArray } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Redirect } from "react-router-dom";
@@ -9,7 +9,6 @@ import classNames from "classnames";
 import { Alert } from "react-bootstrap";
 import ApiService from "../../apiService/ApiService";
 import { loggedIn } from "../../redux/actions/actions";
-import Button from "../button/Button";
 
 import classes from "./NewArticle.module.scss";
 
@@ -21,9 +20,8 @@ const SignupSchema = yup.object().shape({
 });
 
 export default function NewArticle() {
-  const state = useSelector((store) => store);
+  const { article, toggleArticle } = useSelector((store) => store);
   const dispatch = useDispatch();
-  const { article, isLoggedIn, toggleArticle } = state;
   const {
     register,
     formState: { errors },
@@ -43,8 +41,9 @@ export default function NewArticle() {
 
   const [errorTitle, setErrorTitle] = useState(false);
   const [articleSend, setArticleSend] = useState(false);
+  const [redirect, setRedirect] = useState(false);
+
   const params = useParams();
-  const history = useHistory();
   const { slug } = params;
 
   const newApi = new ApiService();
@@ -56,16 +55,11 @@ export default function NewArticle() {
   }, [dispatch]);
 
   const onSubmit = (data) => {
-    const userInfo = localStorage.getItem("user");
-    const info = JSON.parse(userInfo);
-    const { token } = info;
-
     const newArr = data.tagList.map((el) => el.val);
-
     data.tagList = newArr;
 
     if (toggleArticle) {
-      newApi.updatedArticle(data, slug, token).then((res) => {
+      newApi.updatedArticle(data, slug).then((res) => {
         setErrorTitle(false);
         setArticleSend(true);
 
@@ -78,22 +72,22 @@ export default function NewArticle() {
         }, 3000);
       });
     } else {
-      newApi.createArticle(data, token).then((res) => {
+      newApi.createArticle(data).then((res) => {
         setErrorTitle(false);
         setArticleSend(false);
-
         if (res === "error") {
           setErrorTitle(true);
         } else {
-          history.push(`/articles/${res.article.slug}`);
+          setRedirect(`/articles/${res.article.slug}`);
         }
       });
     }
   };
 
-  return isLoggedIn ? (
+  return (
     <div className={classes.body}>
       <div className={classes.wrapper}>
+        {redirect && <Redirect to={redirect} />}
         {articleSend ? (
           <>
             <Alert variant="primary" className={classes.alert}>
@@ -154,14 +148,24 @@ export default function NewArticle() {
                           toggleArticle ? article.tagList[index] : ""
                         }
                       />
-                      {Button("Delete", "F5222D", 40, () => remove(index))}
+                      <button
+                        type="button"
+                        className={classes.deleteButton}
+                        onClick={() => remove(index)}
+                      >
+                        Delete
+                      </button>
                     </li>
                   ))}
                 </div>
                 <div>
-                  {Button("Add tag", "1890FF", 40, () => {
-                    append({});
-                  })}
+                  <button
+                    type="button"
+                    className={classes.addButton}
+                    onClick={() => append({})}
+                  >
+                    Add tag
+                  </button>
                 </div>
               </div>
               <button type="submit" className={classes.submit}>
@@ -172,7 +176,5 @@ export default function NewArticle() {
         )}
       </div>
     </div>
-  ) : (
-    <Redirect to="/" />
   );
 }

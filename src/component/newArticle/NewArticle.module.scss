@@ -104,8 +104,26 @@ li {
   display: flex;
   flex-direction: row;
 }
-
-
+.deleteButton {
+  box-sizing: border-box;
+  height: 40px;
+  padding: 0px 17px;
+  border-radius: 4px;
+  align-items: center;
+  margin-right: 14px;
+  border: 1px solid #F5222D;
+  color: #F5222D;
+}
+.addButton {
+  box-sizing: border-box;
+  height: 40px;
+  padding: 0px 17px;
+  border-radius: 4px;
+  align-items: center;
+  margin-right: 14px;
+  border: 1px solid #1890FF;
+  color: #1890FF;
+}
 ::-webkit-input-placeholder { /* WebKit browsers */
   color:    #BFBFBF;
 }

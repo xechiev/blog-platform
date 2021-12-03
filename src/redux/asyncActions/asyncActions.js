@@ -3,20 +3,13 @@ import { setPostsData, setArticle, setTotalArticles, setLoading } from "../actio
 
 const newApiService = new ApiService();
 
-export const getPostsData = (token = 0, page = 1) => (dispatch) => {
-  newApiService.getPostsData(token, page).then((res) => {
+export const getPostsData = (page = 1) => (dispatch) => {
+  newApiService.getPostsData(page).then((res) => {
     dispatch(setPostsData(res.articles));
     dispatch(setTotalArticles(res.articlesCount));
     dispatch(setLoading(true));
   });
 };
-
-// export const getWholeArticle = (value) => (dispatch) => {
-//   newApiService.getArticle(value).then((res) => {
-//     dispatch(setArticle(res.article));
-//     dispatch(loggedIn(true));
-//   });
-// };
 
 export const addLike = (slug) => (dispatch) => {
   newApiService.favoriteArticle(slug).then((res) => {

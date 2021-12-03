@@ -35,7 +35,9 @@ export default function Post({
     <div className={classes.wrapper}>
       <div className={classes.body}>
         <div className={classes.titleLike}>
-          <h5 className={classes.title}>{title}</h5>
+          <Link to={`/articles/${slug}`}>
+            <h5 className={classes.title}>{title}</h5>
+          </Link>
           <div className={classes.favor}>
             <button
               type="button"
@@ -54,8 +56,10 @@ export default function Post({
         {alert && (
           <>
             <Alert variant="warning">
-              In order to put like - 
-              <Link to="/sign-in"> sign in!</Link>
+              In order to put like -
+              <Link to="/sign-in"> 
+                sign in!
+              </Link>
             </Alert>
           </>
         )}

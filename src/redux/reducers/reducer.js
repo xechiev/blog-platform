@@ -31,6 +31,12 @@ function reducer(state = initialState, action) {
     case SET_ARTICLE:
       return {
         ...state,
+        dataPosts: state.dataPosts.map((post) => {
+          if (post.slug === action.payload.slug) {
+            return action.payload;
+          }
+          return post;
+        }),
         article: action.payload,
         isLoaded: true,
       };

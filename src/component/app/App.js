@@ -18,18 +18,18 @@ export default function App() {
       <Header />
       <div className={classes.app}>
         <Switch>
-          <Route path={["/", "/articles"]} exact render={() => <PostList />} />
-          <Route path="/articles/:slug" exact render={() => <Article />} />
+          <Route path={["/", "/articles"]} exact component={() => <PostList />} />
+          <Route path="/articles/:slug" exact component={() => <Article />} />
           <Route
             path="/articles/:slug/edit"
             exact
-            render={() => <EditArticle />}
+            component={() => <EditArticle />}
           />
           <Route path="/sign-up" exact component={NewAccount} />
           <Route path="/sign-in" exact component={SignIn} />
           <Route path="/profile" exact component={EditProfile} />
           <Route path="/new-article" exact component={NewArticle} />
-          <Route render={() => <Page404 />} />
+          <Route component={() => <Page404 />} />
         </Switch>
       </div>
     </Router>

@@ -13,14 +13,14 @@ import classes from "./Header.module.scss";
 
 export default function Header() {
   const dispatch = useDispatch();
-  const state = useSelector((store) => store);
-  const { isLoggedIn } = state;
+  const { isLoggedIn } = useSelector((store) => store);
   let userHeaderInfo = "";
 
   if (isLoggedIn) {
     const dataUser = localStorage.getItem("user");
-    userHeaderInfo = JSON.parse(dataUser);
+    userHeaderInfo = JSON.parse(localStorage.getItem("user"));
   }
+  // isLoggedIn ? userHeaderInfo = JSON.parse(localStorage.getItem("user")) : userHeaderInfo = " ";
 
   const logoutUser = () => {
     dispatch(loggedIn(false));

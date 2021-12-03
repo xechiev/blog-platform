@@ -1,13 +1,16 @@
 export default class ApiService {
   _domain = "https://api.realworld.io/api/";
 
-  _userInfo = localStorage.getItem("user");
-
-  _info = JSON.parse(this._userInfo);
-
-  async getResourse(url, page = 1) {
+  async getResourse(url, page = 1, t = "") {
     const result = await fetch(
-      `${this._domain}${url}?limit=5&offset=${(page - 1) * 5}`
+      `${this._domain}${url}?limit=5&offset=${(page - 1) * 5}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${t}`,
+        }
+      }
     );
 
     if (!result.ok) {
@@ -17,121 +20,38 @@ export default class ApiService {
     return await result.json();
   }
 
-  async getPostsData(token, page = 0) {
-    let result = [];
-    if (token) {
-      result = await fetch(
-        `${this._domain}${"articles"}?limit=5&offset=${page - 1}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json; charset = utf-8",
-            Authorization: `Token ${token}`,
-          },
-        }
-      );
+  async fetchPatternUser(url, m, t, b) {
+    let result = await fetch(`${this._domain}${url}`, {
+      method: m,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${t}`,
+      },
+      body: JSON.stringify({ user: b }),
+    });
 
-      if (!result.ok) {
-        throw new Error(`Возникла ошибка ${result.status}`);
-      }
-    } else {
-      result = await fetch(`${this._domain}${"articles"}?limit=5&offset=${0}`);
-
-      if (!result.ok) {
-        throw new Error(`Возникла ошибка ${result.status}`);
-      }
+    if (result.status === 422 || result.status === 500) {
+      result = "error";
+      return result;
     }
 
     return result.json();
   }
 
-  async getArticle(slug) {
-    const result = await this.getResourse(`articles/${slug}`);
-    return result;
-  }
-
-  async registerUser(data) {
-    let result = await fetch(`${this._domain}${"users"}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ user: data }),
+  async fetchPatternArticle(url, m, t, b) {
+    let result = await fetch(`${this._domain}${url}`, {
+      method: m,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${t}`,
+      },
+      body: JSON.stringify({ article: b }),
     });
 
     if (result.status === 422) {
       result = "error";
       return result;
     }
-    return result.json();
-  }
-
-  async authenticationUser(data) {
-    const result = await fetch(`${this._domain}${"users/login"}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ user: data }),
-    });
-    const request = result.json();
-    return request;
-  }
-
-  async updatedUser(data, token) {
-    let result = await fetch(`${this._domain}${"user"}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Token ${token}`,
-      },
-      body: JSON.stringify({ user: data }),
-    });
-
-    if (result.status === 500) {
-      result = "error";
-      return result;
-    }
-
-    return result.json();
-  }
-
-  async createArticle(data, token) {
-    let result = await fetch(`${this._domain}${"articles"}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Token ${token}`,
-      },
-      body: JSON.stringify({ article: data }),
-    });
-
-    if (result.status === 422) {
-      result = "error";
-      return result;
-    }
-
-    return result.json();
-  }
-
-  async updatedArticle(data, slug, token) {
-    const result = await fetch(`${this._domain}${"articles/"}${slug}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Token ${token}`,
-      },
-      body: JSON.stringify({ user: data }),
-    });
-
-    const request = result.json();
-    return request;
-  }
-
-  async deleteArticle(slug) {
-    let result = await fetch(`${this._domain}${"articles/"}${slug}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Token ${this._info.token}`,
-      },
-    });
 
     if (result.status === 204) {
       result = "ok";
@@ -141,28 +61,91 @@ export default class ApiService {
     return result.json();
   }
 
-  async favoriteArticle(slug) {
-    const result = await fetch(`${this._domain}articles/${slug}/favorite`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Token ${this._info.token}`,
-      },
-    });
-    const request = await result.json();
+  async getPostsData(page) {
+    let result = [];
+    if (localStorage.getItem("user")) {
+      const marker = JSON.parse(localStorage.getItem("user")).token;
+      result = await this.getResourse("articles", page, marker);
+    } else {
+      result = await this.getResourse("articles");
+    }
 
-    return request;
+    return result;
+  }
+
+  async getArticle(slug) {
+    const result = await this.getResourse(`articles/${slug}`);
+    return result;
+  }
+
+  async registerUser(data) {
+    const result = await this.fetchPatternUser("users", "POST", "", data);
+    return result;
+  }
+
+  async authenticationUser(data) {
+    const result = await this.fetchPatternUser("users/login", "POST", "", data);
+    return result;
+  }
+
+  async updatedUser(data) {
+    const marker = JSON.parse(localStorage.getItem("user")).token;
+    const result = await this.fetchPatternUser("user", "PUT", marker, data);
+    return result;
+  }
+
+  async createArticle(data) {
+    const marker = JSON.parse(localStorage.getItem("user")).token;
+    const result = await this.fetchPatternArticle(
+      "articles",
+      "POST",
+      marker,
+      data
+    );
+    return result;
+  }
+
+  async updatedArticle(data, slug) {
+    const marker = JSON.parse(localStorage.getItem("user")).token;
+    const result = await this.fetchPatternArticle(
+      `${"articles/"}${slug}`,
+      "PUT",
+      marker,
+      data
+    );
+    return result;
+  }
+
+  async deleteArticle(slug) {
+    const marker = JSON.parse(localStorage.getItem("user")).token;
+    const result = await this.fetchPatternArticle(
+      `${"articles/"}${slug}`,
+      "DELETE",
+      marker,
+      ""
+    );
+    return result;
+  }
+
+  async favoriteArticle(slug) {
+    const marker = JSON.parse(localStorage.getItem("user")).token;
+    const result = await this.fetchPatternArticle(
+      `articles/${slug}/favorite`,
+      "POST",
+      marker,
+      ""
+    );
+    return result;
   }
 
   async unFavoriteArticle(slug) {
-    const result = await fetch(`${this._domain}articles/${slug}/favorite`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Token ${this._info.token}`,
-      },
-    });
-    const request = await result.json();
-    return request;
+    const marker = JSON.parse(localStorage.getItem("user")).token;
+    const result = await this.fetchPatternArticle(
+      `articles/${slug}/favorite`,
+      "DELETE",
+      marker,
+      ""
+    );
+    return result;
   }
 }

@@ -26,8 +26,8 @@ export default function EditProfile() {
   } = useForm({
     resolver: yupResolver(SignupSchema),
   });
-  const state = useSelector((store) => store);
-  const { isLoggedIn } = state;
+  const { isLoggedIn } = useSelector((store) => store);
+
   const dispatch = useDispatch();
   const [profileUpdated, setProfileUpdated] = useState(false);
   const [redirect, setRedirect] = useState(false);
@@ -48,7 +48,7 @@ export default function EditProfile() {
   }
 
   const onSubmit = (data) => {
-    newApi.updatedUser(data, info.token).then((res) => {
+    newApi.updatedUser(data).then((res) => {
       if (res === "error") {
         setErrorSignIn(true);
       } else {

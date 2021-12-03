@@ -32,6 +32,26 @@
   border-radius: 5px;
   transform: translate(770px, -100px);
 }
+.delete {
+  box-sizing: border-box;
+  height: 31px;
+  padding: 0px 17px;
+  border: 1px solid red;
+  border-radius: 4px;
+  align-items: center;
+  margin-right: 14px;
+  color: #F5222D;
+}
+.edit {
+  box-sizing: border-box;
+  height: 31px;
+  padding: 0px 17px;
+  border: 1px solid #52C41A;
+  border-radius: 4px;
+  align-items: center;
+  margin-right: 14px;
+  color: #52C41A;
+}
 .spin {
   margin: 50px auto;
 }

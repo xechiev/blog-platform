@@ -12,15 +12,13 @@ import {
 } from "../../redux/actions/actions";
 import Post from "../post/Post";
 import ApiService from "../../apiService/ApiService";
-import Button from "../button/Button";
 import Page404 from "../page404/Page404";
 import "antd/dist/antd.css";
 
 import classes from "./Article.module.scss";
 
 export default function Article() {
-  const state = useSelector((store) => store);
-  const { article, isLoggedIn, isLoaded } = state;
+  const { article, isLoaded } = useSelector((store) => store);
   const [forward, setForward] = useState(false);
   const [redirect, setRedirect] = useState(false);
   const [showButton, setShowButton] = useState(false);
@@ -96,10 +94,18 @@ export default function Article() {
                       okText="Yes"
                       cancelText="No"
                     >
-                      {Button("Delete", "F5222D", 31)}
+                      <button type="button" className={classes.delete}>
+                        Delete
+                      </button>
                     </Popconfirm>
                     <Link to={`/articles/${slug}/edit`}>
-                      {Button("Edit", "52C41A", 31, switchEdit)}
+                      <button
+                        type="button"
+                        className={classes.edit}
+                        onClick={switchEdit}
+                      >
+                        Edit
+                      </button>
                     </Link>
                     {forward && <Redirect to="/articles" />}
                   </div>
