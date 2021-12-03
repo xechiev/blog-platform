@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import PrivateRoute from "../privateRoute/PrivateRoute";
 import Page404 from "../page404/Page404";
 import Header from "../header/Header";
 import PostList from "../postList/PostList";
@@ -18,7 +19,11 @@ export default function App() {
       <Header />
       <div className={classes.app}>
         <Switch>
-          <Route path={["/", "/articles"]} exact component={() => <PostList />} />
+          <Route
+            path={["/", "/articles"]}
+            exact
+            component={() => <PostList />}
+          />
           <Route path="/articles/:slug" exact component={() => <Article />} />
           <Route
             path="/articles/:slug/edit"
@@ -27,8 +32,8 @@ export default function App() {
           />
           <Route path="/sign-up" exact component={NewAccount} />
           <Route path="/sign-in" exact component={SignIn} />
-          <Route path="/profile" exact component={EditProfile} />
-          <Route path="/new-article" exact component={NewArticle} />
+          <PrivateRoute component={EditProfile} path="/profile" exact />
+          <PrivateRoute component={NewArticle} path="/new-article" exact />
           <Route component={() => <Page404 />} />
         </Switch>
       </div>

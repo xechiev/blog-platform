@@ -62,7 +62,7 @@ export default function EditProfile() {
     });
   };
 
-  return isLoggedIn ? (
+  return (
     <div className={classes.body}>
       {profileUpdated ? (
         <>
@@ -129,7 +129,5 @@ export default function EditProfile() {
         </div>
       )}
     </div>
-  ) : (
-    <Redirect to="/" />
   );
 }

@@ -38,12 +38,14 @@ export default function NewAccount() {
   const newApi = new ApiService();
 
   const onSubmit = (data) => {
-    delete data.checkbox;
-    delete data.passwordConfirmation;
+    const array = {
+      username: data.username,
+      email: data.email,
+      password: data.password,
+    };
 
-    newApi.registerUser(data).then((res) => {
+    newApi.registerUser(array).then((res) => {
       setErrorSignIn(false);
-
       if (res === "error") {
         setErrorSignIn(true);
       } else {
