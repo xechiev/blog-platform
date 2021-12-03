@@ -1,18 +1,30 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { Route, Redirect } from "react-router-dom";
+import { loggedIn } from "../../redux/actions/actions";
+
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
-  const { isLoggedIn } = useSelector((store) => store);
+  const dispatch = useDispatch();
+  const [indicator, setIndicator] = useState(1)
+
+  useEffect(() => {
+    if (localStorage.getItem("user")) {
+      dispatch(loggedIn(true));
+      setIndicator(true)
+    } else {
+      setIndicator(false)
+    }
+  }, [dispatch]);
 
   return (
     <Route
       {...rest}
       render={(props) => (
-        isLoggedIn ? <Component {...props} /> : <Redirect to="/sign-in" />
+        indicator ? <Component {...props} /> : <Redirect to="/sign-in" />
       )}
     />
-  );
+  ) 
 };
 
 export default PrivateRoute;

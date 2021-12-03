@@ -14,12 +14,6 @@ import classes from "./Header.module.scss";
 export default function Header() {
   const dispatch = useDispatch();
   const { isLoggedIn } = useSelector((store) => store);
-  let userHeaderInfo = " ";
-
-  if (isLoggedIn) {
-    userHeaderInfo = JSON.parse(localStorage.getItem("user"));
-  }
-  // isLoggedIn && userHeaderInfo = JSON.parse(localStorage.getItem("user"));
   
   const logoutUser = () => {
     dispatch(loggedIn(false));
@@ -52,12 +46,12 @@ export default function Header() {
           </NavLink>
           <NavLink to="/profile">
             <h6 className={classes.name}>
-              {userHeaderInfo ? userHeaderInfo.username : " "}
+              {isLoggedIn ? JSON.parse(localStorage.getItem("user")).username : " "}
             </h6>
           </NavLink>
           <NavLink to="/profile">
             <img
-              src={userHeaderInfo ? userHeaderInfo.image : rectangle}
+              src={isLoggedIn ? JSON.parse(localStorage.getItem("user")).image : rectangle}
               alt="foto"
               className={classes.avatar}
             />

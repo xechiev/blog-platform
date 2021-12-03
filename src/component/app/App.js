@@ -25,15 +25,15 @@ export default function App() {
             component={() => <PostList />}
           />
           <Route path="/articles/:slug" exact component={() => <Article />} />
-          <Route
+          <PrivateRoute
             path="/articles/:slug/edit"
             exact
-            component={() => <EditArticle />}
+            component={EditArticle}
           />
           <Route path="/sign-up" exact component={NewAccount} />
           <Route path="/sign-in" exact component={SignIn} />
-          <PrivateRoute component={EditProfile} path="/profile" exact />
-          <PrivateRoute component={NewArticle} path="/new-article" exact />
+          <PrivateRoute component={EditProfile} exact path="/profile" />
+          <PrivateRoute component={NewArticle} exact path="/new-article" />
           <Route component={() => <Page404 />} />
         </Switch>
       </div>
