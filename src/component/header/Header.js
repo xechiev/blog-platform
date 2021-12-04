@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
 import classNames from "classnames";
@@ -13,6 +13,12 @@ import classes from "./Header.module.scss";
 
 export default function Header() {
   const dispatch = useDispatch();
+  useEffect(() => {
+    if (localStorage.getItem("user")) {
+      dispatch(loggedIn(true));
+    }
+  }, [dispatch]);
+
   const { isLoggedIn } = useSelector((store) => store);
   
   const logoutUser = () => {
