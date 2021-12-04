@@ -32,8 +32,8 @@ export default function NewAccount() {
   const dispatch = useDispatch();
   const { isLoggedIn } = useSelector((store) => store);
 
-  const [forward, setForward] = useState(false);
-  const [errorSignIn, setErrorSignIn] = useState(false);
+  const [forward, setForward] = useState(null);
+  const [errorSignIn, setErrorSignIn] = useState(null);
 
   const newApi = new ApiService();
 
@@ -49,8 +49,8 @@ export default function NewAccount() {
       if (res === "error") {
         setErrorSignIn(true);
       } else {
-        dispatch(loggedIn(true));
         localStorage.setItem("user", JSON.stringify(res.user));
+        dispatch(loggedIn(true));
         setForward(false);
         setTimeout(() => {
           setForward(true);

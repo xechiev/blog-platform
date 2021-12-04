@@ -8,7 +8,7 @@ import "antd/dist/antd.css";
 
 export default function Page404() {
   const dispatch = useDispatch();
-  const [redirect, setRedirect] = useState(false);
+  const [redirect, setRedirect] = useState(null);
 
   useEffect(() => {
     if (localStorage.getItem("user")) {

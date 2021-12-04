@@ -15,7 +15,7 @@ export default function EditArticle() {
   const { slug } = params;
   const newApi = new ApiService();
 
-  const [redirect, setRedirect] = useState(false);
+  const [redirect, setRedirect] = useState(null);
 
   useEffect(() => {
     newApi.getArticle(slug).then((res) => {

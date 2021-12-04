@@ -19,9 +19,9 @@ import classes from "./Article.module.scss";
 
 export default function Article() {
   const { article, isLoaded } = useSelector((store) => store);
-  const [forward, setForward] = useState(false);
-  const [redirect, setRedirect] = useState(false);
-  const [showButton, setShowButton] = useState(false);
+  const [forward, setForward] = useState(null);
+  const [redirect, setRedirect] = useState(null);
+  const [showButton, setShowButton] = useState(null);
 
   const dispatch = useDispatch();
   const params = useParams();

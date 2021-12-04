@@ -29,9 +29,9 @@ export default function EditProfile() {
   const { isLoggedIn } = useSelector((store) => store);
 
   const dispatch = useDispatch();
-  const [profileUpdated, setProfileUpdated] = useState(false);
-  const [redirect, setRedirect] = useState(false);
-  const [errorSignIn, setErrorSignIn] = useState(false);
+  const [profileUpdated, setProfileUpdated] = useState(null);
+  const [redirect, setRedirect] = useState(null);
+  const [errorSignIn, setErrorSignIn] = useState(null);
   let info = [];
 
   useEffect(() => {

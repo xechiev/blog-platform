@@ -39,9 +39,9 @@ export default function NewArticle() {
     name: "tagList",
   });
 
-  const [errorTitle, setErrorTitle] = useState(false);
-  const [articleSend, setArticleSend] = useState(false);
-  const [redirect, setRedirect] = useState(false);
+  const [errorTitle, setErrorTitle] = useState(null);
+  const [articleSend, setArticleSend] = useState(null);
+  const [redirect, setRedirect] = useState(null);
 
   const params = useParams();
   const { slug } = params;

@@ -9,7 +9,7 @@ export default class ApiService {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Token ${t}`,
-        }
+        },
       }
     );
 
@@ -20,12 +20,18 @@ export default class ApiService {
     return await result.json();
   }
 
-  async fetchPatternUser(url, m, t, b) {
+  async fetchPatternUser(url, m, b) {
+    let marker = " ";
+
+    if (localStorage.getItem("user")) {
+      marker = JSON.parse(localStorage.getItem("user")).token;
+    }
+
     let result = await fetch(`${this._domain}${url}`, {
       method: m,
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Token ${t}`,
+        Authorization: `Token ${marker || null}`,
       },
       body: JSON.stringify({ user: b }),
     });
@@ -38,12 +44,13 @@ export default class ApiService {
     return result.json();
   }
 
-  async fetchPatternArticle(url, m, t, b) {
+  async fetchPatternArticle(url, m, b) {
+    const marker = JSON.parse(localStorage.getItem("user")).token;
     let result = await fetch(`${this._domain}${url}`, {
       method: m,
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Token ${t}`,
+        Authorization: `Token ${marker}`,
       },
       body: JSON.stringify({ article: b }),
     });
@@ -79,49 +86,38 @@ export default class ApiService {
   }
 
   async registerUser(data) {
-    const result = await this.fetchPatternUser("users", "POST", "", data);
+    const result = await this.fetchPatternUser("users", "POST", data);
     return result;
   }
 
   async authenticationUser(data) {
-    const result = await this.fetchPatternUser("users/login", "POST", "", data);
+    const result = await this.fetchPatternUser("users/login", "POST", data);
     return result;
   }
 
   async updatedUser(data) {
-    const marker = JSON.parse(localStorage.getItem("user")).token;
-    const result = await this.fetchPatternUser("user", "PUT", marker, data);
+    const result = await this.fetchPatternUser("user", "PUT", data);
     return result;
   }
 
   async createArticle(data) {
-    const marker = JSON.parse(localStorage.getItem("user")).token;
-    const result = await this.fetchPatternArticle(
-      "articles",
-      "POST",
-      marker,
-      data
-    );
+    const result = await this.fetchPatternArticle("articles", "POST", data);
     return result;
   }
 
   async updatedArticle(data, slug) {
-    const marker = JSON.parse(localStorage.getItem("user")).token;
     const result = await this.fetchPatternArticle(
       `${"articles/"}${slug}`,
       "PUT",
-      marker,
       data
     );
     return result;
   }
 
   async deleteArticle(slug) {
-    const marker = JSON.parse(localStorage.getItem("user")).token;
     const result = await this.fetchPatternArticle(
       `${"articles/"}${slug}`,
       "DELETE",
-      marker,
       ""
     );
     return result;
@@ -132,18 +128,15 @@ export default class ApiService {
     const result = await this.fetchPatternArticle(
       `articles/${slug}/favorite`,
       "POST",
-      marker,
       ""
     );
     return result;
   }
 
   async unFavoriteArticle(slug) {
-    const marker = JSON.parse(localStorage.getItem("user")).token;
     const result = await this.fetchPatternArticle(
       `articles/${slug}/favorite`,
       "DELETE",
-      marker,
       ""
     );
     return result;

@@ -25,8 +25,8 @@ export default function SignIn() {
   });
   const dispatch = useDispatch();
 
-  const [redirect, setRedirect] = useState(false);
-  const [errorSignIn, setErrorSignIn] = useState(false);
+  const [redirect, setRedirect] = useState(null);
+  const [errorSignIn, setErrorSignIn] = useState(null);
 
   const newApi = new ApiService();
 

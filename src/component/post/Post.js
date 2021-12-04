@@ -20,7 +20,7 @@ export default function Post({
   favorited,
   slug,
 }) {
-  const [alert, setAlert] = useState(false);
+  const [alert, setAlert] = useState(null);
   const dispatch = useDispatch();
 
   const handleClick = () => {

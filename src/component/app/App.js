@@ -22,9 +22,9 @@ export default function App() {
           <Route
             path={["/", "/articles"]}
             exact
-            component={() => <PostList />}
+            component={PostList}
           />
-          <Route path="/articles/:slug" exact component={() => <Article />} />
+          <Route path="/articles/:slug" exact component={Article} />
           <PrivateRoute
             path="/articles/:slug/edit"
             exact
@@ -32,9 +32,9 @@ export default function App() {
           />
           <Route path="/sign-up" exact component={NewAccount} />
           <Route path="/sign-in" exact component={SignIn} />
-          <PrivateRoute component={EditProfile} exact path="/profile" />
-          <PrivateRoute component={NewArticle} exact path="/new-article" />
-          <Route component={() => <Page404 />} />
+          <PrivateRoute path="/profile" exact component={EditProfile} />
+          <PrivateRoute path="/new-article" exact component={NewArticle} />
+          <Route component={Page404} />
         </Switch>
       </div>
     </Router>

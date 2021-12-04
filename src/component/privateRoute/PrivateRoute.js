@@ -6,7 +6,7 @@ import { loggedIn } from "../../redux/actions/actions";
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
   const dispatch = useDispatch();
-  const [indicator, setIndicator] = useState(1)
+  const [indicator, setIndicator] = useState(true)
 
   useEffect(() => {
     if (localStorage.getItem("user")) {
